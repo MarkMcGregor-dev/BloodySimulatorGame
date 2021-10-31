@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private GameObject redBloodCell;
 
-    void Awake()
+    private void Start()
     {
         radius = 5;
         length = 20;
@@ -20,7 +20,7 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        Transform artery = this.gameObject.transform;
+        Transform artery = transform;
         float x = 0;
         float y;
         float z = 0;
@@ -42,7 +42,7 @@ public class Spawner : MonoBehaviour
 
             y = Random.Range(-radius + 1.0f, radius - 1.0f);
 
-            Instantiate(redBloodCell, new Vector3(x, y, z), Quaternion.identity, this.gameObject.transform);
+            Instantiate(redBloodCell, new Vector3(x, y, z) + artery.position, Quaternion.identity, artery);
         }
     }
 }
