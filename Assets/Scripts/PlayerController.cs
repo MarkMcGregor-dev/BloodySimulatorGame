@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Collectible")
         {
             // call the collectedBloodCell event
+            // "announces" that player has collected blood cell
             if (PlayerCollectedBloodCell != null) PlayerCollectedBloodCell();
 
             Destroy(other.gameObject);

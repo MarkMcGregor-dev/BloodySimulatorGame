@@ -13,36 +13,28 @@ public class ScoreCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        // like and subscribe
+        // subscribes to collected blood cell event when it occurs in PlayerController class
         PlayerController.PlayerCollectedBloodCell += OnPlayerCollectedBloodCell;
     }
 
     private void OnDisable()
-    {
+    {        
+        // unsubscribes to collected blood cell event after it has occured
         PlayerController.PlayerCollectedBloodCell -= OnPlayerCollectedBloodCell;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // listens to collected blood cell "announcement"
+    // when the event is heart, this function is called:
     private void OnPlayerCollectedBloodCell()
     {
         totalScore = totalScore + bloodCellScore;
         scoreValue.text = "Score: " + totalScore;
     }
-    /*
+    
+    // this will be used when the player collides with blockages
     private void OnPlayerDestroyedBlockage()
     {
         totalScore = totalScore + blockageScore;
         scoreValue.text = "Score: " + totalScore;
-    }*/
+    }
 }
