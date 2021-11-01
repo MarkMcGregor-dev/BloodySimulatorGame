@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    enum PlayerState {Idle, Moving, Dead, Respawn}
+    enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     PlayerState currentState = PlayerState.Idle;
     Vector3 playerPos;
 
@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Moving:
                 break;
 
+            case PlayerState.Collision:
+                Debug.Log("player collision!");
+                break;
+
             default:
                 break;
         }
@@ -50,17 +54,25 @@ public class PlayerController : MonoBehaviour
         playerTranslate(translateInput);
         playerRotate(rotateInput);
     }
-    
     private void playerTranslate(float input)
     {
-        transform.Translate(Vector3.forward * input * moveForce);
+        transform.Translate(Vector3.up * input * moveForce);
         currentState = PlayerState.Moving;
     }
-    
     private void playerRotate(float input)
     {
         transform.Rotate(0, input * rotationRate * Time.deltaTime, 0);
         currentState = PlayerState.Moving;
+    }
+
+    /*--- COLLISIONS ---*/
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Collectible")
+        {
+            currentState = PlayerState.Collision;
+            Destroy(other.gameObject);
+        }
     }
 
 }
