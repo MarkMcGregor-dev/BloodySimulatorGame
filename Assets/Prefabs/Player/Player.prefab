@@ -82,7 +82,7 @@ MonoBehaviour:
   rotateInputAxis: Horizontal
   rotationRate: 360
   moveForce: 0.1
-  traverseSpeed: 5
+  traverseSpeed: 20
 --- !u!54 &488649893326688371
 Rigidbody:
   m_ObjectHideFlags: 0
