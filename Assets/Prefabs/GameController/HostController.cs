@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum HostDeathReason
 {
-    HeartRateHigh,
     HeartRateLow,
     EnergyDepleted
 }
@@ -31,11 +30,12 @@ public class HostController : MonoBehaviour
     // config variables
     [Header("Config")]
     public float minHeartRate   = 30f;
-    public float maxHeartRate   = 220f;
+    public float idealHeartRate = 220f;
     public float maxEnergy      = 100f;
     public float minEnergy      = 0f;
     public float energyDepletionScaler = 1f;
     public float heartRateDeltaScaler = 1f;
+    public float energyFromBloodCells = 5f;
     [Tooltip("The frequency at which the host is simulated (in seconds)")]
     public float updateRate;
 
@@ -51,20 +51,23 @@ public class HostController : MonoBehaviour
     {
         // setup event listeners
         GameController.GameStarted += OnGameStarted;
+        PlayerController.PlayerCollectedBloodCell += OnCollectBloodCell;
     }
 
     private void OnDisable()
     {
         // clear event listeners
         GameController.GameStarted -= OnGameStarted;
+        PlayerController.PlayerCollectedBloodCell -= OnCollectBloodCell;
     }
 
     void Start()
     {
         // setup variables
-        currentHeartRate = (minHeartRate + maxHeartRate) / 2f; // heartrate starts at the average
+        currentHeartRate = idealHeartRate; // heartrate starts at the ideal value
+        desiredHeartRate = idealHeartRate;
         currentEnergy = (maxEnergy - minEnergy) * 1f;
-        hostState = HostState.Dead;
+        hostState = HostState.Alive;
         timeOfLastStep = Time.time;
     }
 
@@ -80,13 +83,6 @@ public class HostController : MonoBehaviour
                 if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
                 hostState = HostState.Dead;
 
-            // check if the heartrate is too high
-            } else if (currentHeartRate > maxHeartRate)
-            {
-                // host dies
-                if (HostDied != null) HostDied(HostDeathReason.HeartRateHigh);
-                hostState = HostState.Dead;
-
             } else
             {
                 float timeSinceLastStep = Time.time - timeOfLastStep;
@@ -94,14 +90,11 @@ public class HostController : MonoBehaviour
                 // check if it is time to simulate a step
                 if (timeSinceLastStep >= updateRate)
                 {
-                    // calculate the adjustment to the energy
-                    float nextEnergyVal = currentEnergy - (currentHeartRate * energyDepletionScaler * timeSinceLastStep);
-                    currentEnergy = Mathf.Clamp(nextEnergyVal, minEnergy, maxEnergy);
-
                     // calculate the adjustment to the heartrate
-                    float energyInfluence = currentEnergy / (maxEnergy - minEnergy); // 0 to 1
-                    desiredHeartRate = Mathf.Lerp(minHeartRate, (minHeartRate + maxHeartRate) / 2f, energyInfluence);
-                    currentHeartRate = Mathf.Lerp(currentHeartRate, desiredHeartRate, heartRateDeltaScaler * Time.deltaTime);
+                    currentHeartRate = currentHeartRate - (heartRateDeltaScaler * timeSinceLastStep);
+
+                    // calculate the adjustment to the energy
+                    currentEnergy = currentEnergy - (Mathf.Min(currentHeartRate, idealHeartRate/2) * energyDepletionScaler * timeSinceLastStep);
 
                     // fire events
                     if (EnergyChanged != null) EnergyChanged(currentEnergy);
@@ -116,9 +109,16 @@ public class HostController : MonoBehaviour
     private void OnGameStarted()
     {
         // reset variables
-        currentHeartRate = (minHeartRate + maxHeartRate) / 2f; // heartrate starts at the average
+        currentHeartRate = idealHeartRate; // heartrate starts at the ideal value
+        desiredHeartRate = idealHeartRate;
         currentEnergy = (maxEnergy - minEnergy) * 1f;
         hostState = HostState.Alive;
         timeOfLastStep = Time.time;
+    }
+
+    private void OnCollectBloodCell()
+    {
+        // nudge the energy up
+        currentEnergy = Mathf.Clamp(currentEnergy + energyFromBloodCells, minEnergy, maxEnergy);
     }
 }

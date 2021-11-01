@@ -167,11 +167,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minHeartRate: 30
-  maxHeartRate: 220
+  idealHeartRate: 220
   maxEnergy: 100
   minEnergy: 0
-  energyDepletionScaler: 0.01
-  heartRateDeltaScaler: 50
+  energyDepletionScaler: 0.03
+  heartRateDeltaScaler: 3
+  energyFromBloodCells: 5
   updateRate: 0.5
   currentHeartRate: 0
   desiredHeartRate: 0
