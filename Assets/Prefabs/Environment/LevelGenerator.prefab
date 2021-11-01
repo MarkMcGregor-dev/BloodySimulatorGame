@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6666683836708208014}
   - component: {fileID: 6666683836708208013}
+  - component: {fileID: 272056294056790064}
   m_Layer: 0
   m_Name: LevelGenerator
   m_TagString: Untagged
@@ -46,6 +47,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arteryPiece: {fileID: 8429305030078950991, guid: ae387fb5b8e54d94bb2b5a3fca5f732b, type: 3}
   numPiecesBuffer: 10
+--- !u!114 &272056294056790064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6666683836708208015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8e05338390fa545a57b96ec05af074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6666683836749890178
 GameObject:
   m_ObjectHideFlags: 0

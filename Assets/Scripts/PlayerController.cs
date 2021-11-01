@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public delegate void PlayerCollectDelegate();
+    public static event PlayerCollectDelegate PlayerCollectedBloodCell;
+
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     PlayerState currentState = PlayerState.Idle;
     Vector3 playerPos;
@@ -13,6 +16,7 @@ public class PlayerController : MonoBehaviour
 
     public float rotationRate = 360;    // allows 360 degrees of rotation
     public float moveForce = 1;         // speed at which player moves
+    public float traverseSpeed;
 
     /*--- START ---*/
     void Start()
@@ -33,10 +37,6 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Moving:
                 break;
 
-            case PlayerState.Collision:
-                Debug.Log("player collision!");
-                break;
-
             default:
                 break;
         }
@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
 
         playerInput(translateAxis, rotateAxis);
 
+        // move the player forwards at a constant rate
+        transform.position = transform.position + (transform.forward * traverseSpeed * Time.deltaTime);
     }
 
     /*--- CONTROLS ---*/
@@ -66,11 +68,13 @@ public class PlayerController : MonoBehaviour
     }
 
     /*--- COLLISIONS ---*/
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Collectible")
         {
-            currentState = PlayerState.Collision;
+            // call the collectedBloodCell event
+            if (PlayerCollectedBloodCell != null) PlayerCollectedBloodCell();
+
             Destroy(other.gameObject);
         }
     }
