@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
 
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     PlayerState currentState = PlayerState.Idle;
-    Vector3 playerPos;
 
     public string translateInputAxis = "Vertical";
     public string rotateInputAxis = "Horizontal";
@@ -18,10 +17,33 @@ public class PlayerController : MonoBehaviour
     public float moveForce = 1;         // speed at which player moves
     public float traverseSpeed;
 
+    [Header("Movement Config")]
+    public float moveSpeed;
+    public float targetMoveSpeed;
+    public float movementRadius;
+    
+    private float traverseSpeedScaler;
+    private Vector3 currentMoveTarget;
+
+    private void OnEnable()
+    {
+        // setup event listeners
+        HostController.HeartRateChanged += OnHeartRateChanged;
+    }
+
+    private void OnDisable()
+    {
+        // cleanup event listeners
+        HostController.HeartRateChanged -= OnHeartRateChanged;
+    }
+
     /*--- START ---*/
     void Start()
     {
+        // setup variables
         currentState = PlayerState.Idle;
+        currentMoveTarget = Vector3.zero;
+        traverseSpeedScaler = 0f;
     }
 
     /*--- UPDATE ---*/
@@ -31,7 +53,6 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case PlayerState.Idle:
-                playerPos = GameObject.Find("Player").transform.position;
                 break;
 
             case PlayerState.Moving:
@@ -41,30 +62,32 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        float translateAxis = Input.GetAxis(translateInputAxis);
-        float rotateAxis = Input.GetAxis(rotateInputAxis);
+        float horizontalInput = Input.GetAxis(rotateInputAxis);
+        float verticalInput = Input.GetAxis(translateInputAxis);
+        
+        // add the forwards movement to the player
+        Vector3 forwardMovement = transform.forward * traverseSpeed * traverseSpeedScaler * Time.deltaTime;
+        transform.Translate(forwardMovement, Space.World);
 
-        playerInput(translateAxis, rotateAxis);
-
-        // move the player forwards at a constant rate
-        transform.position = transform.position + (transform.forward * traverseSpeed * Time.deltaTime);
+        // add the controlled movement to the player
+        DoControlledMovement(horizontalInput, verticalInput);
     }
 
-    /*--- CONTROLS ---*/
-    private void playerInput(float translateInput, float rotateInput)
+    private void DoControlledMovement(float xVal, float yVal)
     {
-        playerTranslate(translateInput);
-        playerRotate(rotateInput);
-    }
-    private void playerTranslate(float input)
-    {
-        transform.Translate(Vector3.up * input * moveForce);
-        currentState = PlayerState.Moving;
-    }
-    private void playerRotate(float input)
-    {
-        transform.Rotate(0, input * rotationRate * Time.deltaTime, 0);
-        currentState = PlayerState.Moving;
+        // get the position of the player on the XY plane
+        Vector2 currentXYPos = new Vector2(transform.position.x, transform.position.y);
+
+        // calculate the 2d controlled movement
+        Vector2 controlledMovement = Vector2.ClampMagnitude(new Vector2(xVal, yVal), 1);
+
+        // clamp the movement to the radius of the artery (playable area)
+        controlledMovement = Vector2.ClampMagnitude(currentXYPos + controlledMovement, movementRadius) - currentXYPos;
+
+        // apply the movement
+        transform.Translate(controlledMovement * moveSpeed * Time.deltaTime);
+
+        Debug.DrawRay(transform.position, controlledMovement, Color.white);
     }
 
     /*--- COLLISIONS ---*/
@@ -79,4 +102,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnHeartRateChanged(float newHeartRate)
+    {
+        traverseSpeedScaler = newHeartRate / 10f;
+        Debug.Log(traverseSpeedScaler);
+    }
 }

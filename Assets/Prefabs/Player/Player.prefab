@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3401644371465865807}
   - component: {fileID: 1334226995851244168}
   - component: {fileID: 488649893326688371}
-  - component: {fileID: 7587227551710996777}
+  - component: {fileID: 561347226814743621}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -82,7 +82,10 @@ MonoBehaviour:
   rotateInputAxis: Horizontal
   rotationRate: 360
   moveForce: 0.1
-  traverseSpeed: 20
+  traverseSpeed: 3
+  moveSpeed: 15
+  targetMoveSpeed: 20
+  movementRadius: 9
 --- !u!54 &488649893326688371
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -95,12 +98,12 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &7587227551710996777
-BoxCollider:
+--- !u!135 &561347226814743621
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -110,7 +113,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4181975986373259257
 GameObject:
