@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     
     private void playerTranslate(float input)
     {
-        transform.Translate(Vector3.forward * input * moveForce);
+        transform.Translate(Vector3.up * input * moveForce);
         currentState = PlayerState.Moving;
     }
     
