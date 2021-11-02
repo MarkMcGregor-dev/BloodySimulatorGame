@@ -9,18 +9,20 @@ public class ScoreCounter : MonoBehaviour
 
     public float totalScore;
     private float bloodCellScore = 1;
-    private float blockageScore = 3;
+    private float blockageScore = 5;
 
     private void OnEnable()
     {
         // subscribes to collected blood cell event when it occurs in PlayerController class
         PlayerController.PlayerCollectedBloodCell += OnPlayerCollectedBloodCell;
+        BlockageBehaviour.BlockageBroken += OnBlockageBroken;
     }
 
     private void OnDisable()
     {        
         // unsubscribes to collected blood cell event after it has occured
         PlayerController.PlayerCollectedBloodCell -= OnPlayerCollectedBloodCell;
+        BlockageBehaviour.BlockageBroken -= OnBlockageBroken;
     }
 
     // listens to collected blood cell "announcement"
@@ -32,7 +34,7 @@ public class ScoreCounter : MonoBehaviour
     }
     
     // this will be used when the player collides with blockages
-    private void OnPlayerDestroyedBlockage()
+    private void OnBlockageBroken()
     {
         totalScore = totalScore + blockageScore;
         scoreValue.text = "Score: " + totalScore;
