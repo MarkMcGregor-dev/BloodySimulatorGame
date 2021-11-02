@@ -173,6 +173,7 @@ MonoBehaviour:
   energyDepletionScaler: 0.01
   heartRateDeltaScaler: 3
   energyFromBloodCells: 1
+  blockageHeartRateIncrement: 15
   updateRate: 0.5
   currentHeartRate: 0
   desiredHeartRate: 0
@@ -622,6 +623,10 @@ PrefabInstance:
     - target: {fileID: 3401644371465865807, guid: db9247ece4754a3488aa1b65ad1b9cfa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5138515646120831412, guid: db9247ece4754a3488aa1b65ad1b9cfa, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db9247ece4754a3488aa1b65ad1b9cfa, type: 3}

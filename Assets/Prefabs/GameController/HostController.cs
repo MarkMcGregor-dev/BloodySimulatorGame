@@ -36,15 +36,16 @@ public class HostController : MonoBehaviour
     public float energyDepletionScaler = 1f;
     public float heartRateDeltaScaler = 1f;
     public float energyFromBloodCells = 5f;
+    public float blockageHeartRateIncrement;
     [Tooltip("The frequency at which the host is simulated (in seconds)")]
     public float updateRate;
 
     // script variables
-    private HostState hostState;
     [Header("Do not edit")]
     public float currentHeartRate;
     public float desiredHeartRate;
     public float currentEnergy;
+    private HostState hostState;
     private float timeOfLastStep;
 
     private void OnEnable()
@@ -52,6 +53,7 @@ public class HostController : MonoBehaviour
         // setup event listeners
         GameController.GameStarted += OnGameStarted;
         PlayerController.PlayerCollectedBloodCell += OnCollectBloodCell;
+        BlockageBehaviour.BlockageBroken += OnBlockageBroken;
     }
 
     private void OnDisable()
@@ -59,6 +61,7 @@ public class HostController : MonoBehaviour
         // clear event listeners
         GameController.GameStarted -= OnGameStarted;
         PlayerController.PlayerCollectedBloodCell -= OnCollectBloodCell;
+        BlockageBehaviour.BlockageBroken -= OnBlockageBroken;
     }
 
     void Start()
@@ -121,5 +124,11 @@ public class HostController : MonoBehaviour
     {
         // nudge the energy up
         currentEnergy = Mathf.Clamp(currentEnergy + energyFromBloodCells, minEnergy, maxEnergy);
+    }
+
+    private void OnBlockageBroken()
+    {
+        // nudge the heartrate towards desiredHeartRate
+        currentHeartRate = Mathf.Min(currentHeartRate + blockageHeartRateIncrement, desiredHeartRate);
     }
 }

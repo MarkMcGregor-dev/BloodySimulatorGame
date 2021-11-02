@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Environment
   - Collectible
+  - Blockage
   layers:
   - Default
   - TransparentFX

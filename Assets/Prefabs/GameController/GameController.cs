@@ -15,13 +15,15 @@ public class GameController : MonoBehaviour
     private void OnEnable()
     {
         // setup event listeners
-        HostController.HostDied += StopGame;
+        HostController.HostDied += OnHostDied;
+        PlayerController.PlayerDied += OnPlayerDied;
     }
 
     private void OnDisable()
     {
         // clear event listeners
-        HostController.HostDied -= StopGame;
+        HostController.HostDied -= OnHostDied;
+        PlayerController.PlayerDied -= OnPlayerDied;
     }
 
     void Start()
@@ -44,8 +46,15 @@ public class GameController : MonoBehaviour
         gameRunning = true;
     }
 
-    private void StopGame(HostDeathReason deathReason)
+    private void OnHostDied(HostDeathReason deathReason)
     {
+        // end the game
+        if (GameStopped != null) GameStopped();
+    }
+
+    private void OnPlayerDied()
+    {
+        // end the game
         if (GameStopped != null) GameStopped();
     }
 }

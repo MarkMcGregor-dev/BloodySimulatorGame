@@ -222,6 +222,7 @@ MonoBehaviour:
   moveSpeed: 0.075
   movementRadius: 9
   maxNumCells: 20
+  cellsToBreakBlockage: 5
 --- !u!54 &488649893326688371
 Rigidbody:
   m_ObjectHideFlags: 0

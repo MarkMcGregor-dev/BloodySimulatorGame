@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     public delegate void PlayerCollectDelegate();
     public static event PlayerCollectDelegate PlayerCollectedBloodCell;
 
+    public delegate void PlayerDeathDelegate();
+    public static event PlayerDeathDelegate PlayerDied;
+
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     PlayerState currentState = PlayerState.Idle;
 
@@ -19,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public float movementRadius;
     [Header("Stats config")]
     public int maxNumCells;
+    public int cellsToBreakBlockage;
     
     private float traverseSpeedScaler;
     private HostController hostController;
@@ -93,7 +97,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if collided with a blood cell and not holding max
-        if (other.gameObject.tag == "Collectible" && numCellsCollected <= maxNumCells)
+        if (other.tag == "Collectible" && numCellsCollected <= maxNumCells)
         {
             // call the collectedBloodCell event
             // "announces" that player has collected blood cell
@@ -103,12 +107,31 @@ public class PlayerController : MonoBehaviour
             numCellsCollected++;
 
             Destroy(other.gameObject);
+        } else if (other.tag == "Blockage")
+        {
+            Debug.Log("Collided with Blockage");
+
+            // make sure the player has enough cells to break the blockage
+            if (numCellsCollected >= cellsToBreakBlockage)
+            {
+                // break the blockage
+                other.GetComponent<BlockageBehaviour>().BreakBlockage();
+
+                // decrement the cellCollected by the cost of breaking a blockage
+                numCellsCollected -= cellsToBreakBlockage;
+
+                Debug.Log("Blockage Broken!");
+
+            } else
+            {
+                // kill the player
+                if (PlayerDied != null) PlayerDied();
+            }
         }
     }
 
     private void OnHeartRateChanged(float newHeartRate)
     {
         traverseSpeedScaler = newHeartRate / 10f;
-        Debug.Log(traverseSpeedScaler);
     }
 }
