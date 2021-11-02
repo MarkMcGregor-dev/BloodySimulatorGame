@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     
     private float traverseSpeedScaler;
     private Vector3 currentMoveTarget;
+    private HostController hostController;
 
     private void OnEnable()
     {
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour
         currentState = PlayerState.Idle;
         currentMoveTarget = Vector3.zero;
         traverseSpeedScaler = 0f;
+        hostController = GameObject.FindObjectOfType<HostController>();
     }
 
     /*--- UPDATE ---*/
@@ -85,7 +87,7 @@ public class PlayerController : MonoBehaviour
         controlledMovement = Vector2.ClampMagnitude(currentXYPos + controlledMovement, movementRadius) - currentXYPos;
 
         // apply the movement
-        transform.Translate(controlledMovement * moveSpeed * Time.deltaTime);
+        transform.Translate(controlledMovement * hostController.currentHeartRate * moveSpeed * Time.deltaTime);
 
         Debug.DrawRay(transform.position, controlledMovement, Color.white);
     }

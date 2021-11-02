@@ -94,7 +94,8 @@ public class HostController : MonoBehaviour
                     currentHeartRate = currentHeartRate - (heartRateDeltaScaler * timeSinceLastStep);
 
                     // calculate the adjustment to the energy
-                    currentEnergy = currentEnergy - (Mathf.Min(currentHeartRate, idealHeartRate/2) * energyDepletionScaler * timeSinceLastStep);
+                    currentEnergy = currentEnergy - (Mathf.Min(currentHeartRate, idealHeartRate/2)
+                        * energyDepletionScaler * timeSinceLastStep);
 
                     // fire events
                     if (EnergyChanged != null) EnergyChanged(currentEnergy);
