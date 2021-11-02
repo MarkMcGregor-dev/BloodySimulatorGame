@@ -303,6 +303,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5361466572419558708, guid: ae387fb5b8e54d94bb2b5a3fca5f732b, type: 3}
+      propertyPath: blockage
+      value: 
+      objectReference: {fileID: 7955853628933789630, guid: f1849e6ee3c7f8248929a76cbe7b8276, type: 3}
     - target: {fileID: 8429305030078950991, guid: ae387fb5b8e54d94bb2b5a3fca5f732b, type: 3}
       propertyPath: m_Name
       value: ArteryWallPiece
