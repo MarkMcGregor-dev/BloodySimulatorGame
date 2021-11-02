@@ -13,18 +13,16 @@ public class PlayerController : MonoBehaviour
     public string translateInputAxis = "Vertical";
     public string rotateInputAxis = "Horizontal";
 
-    public float rotationRate = 360;    // allows 360 degrees of rotation
-    public float moveForce = 1;         // speed at which player moves
-    public float traverseSpeed;
-
     [Header("Movement Config")]
+    public float traverseSpeed;
     public float moveSpeed;
-    public float targetMoveSpeed;
     public float movementRadius;
+    [Header("Stats config")]
+    public int maxNumCells;
     
     private float traverseSpeedScaler;
-    private Vector3 currentMoveTarget;
     private HostController hostController;
+    private int numCellsCollected;
 
     private void OnEnable()
     {
@@ -43,7 +41,6 @@ public class PlayerController : MonoBehaviour
     {
         // setup variables
         currentState = PlayerState.Idle;
-        currentMoveTarget = Vector3.zero;
         traverseSpeedScaler = 0f;
         hostController = GameObject.FindObjectOfType<HostController>();
     }
@@ -95,11 +92,15 @@ public class PlayerController : MonoBehaviour
     /*--- COLLISIONS ---*/
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Collectible")
+        // if collided with a blood cell and not holding max
+        if (other.gameObject.tag == "Collectible" && numCellsCollected <= maxNumCells)
         {
             // call the collectedBloodCell event
             // "announces" that player has collected blood cell
             if (PlayerCollectedBloodCell != null) PlayerCollectedBloodCell();
+
+            // increment the number of collected cells
+            numCellsCollected++;
 
             Destroy(other.gameObject);
         }

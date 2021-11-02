@@ -32,6 +32,6 @@ public class BloodCellCollector : MonoBehaviour
         Debug.Log("COLLECTED");
 
         // create a new blood cell to follow the player
-        Instantiate(bloodCellPrefab, new Vector3(), Quaternion.identity, transform);
+        GameObject newBloodCell = Instantiate(bloodCellPrefab, transform.position, Quaternion.identity, transform);
     }
 }
