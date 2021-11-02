@@ -109,7 +109,9 @@ public class PlayerController : MonoBehaviour
                 numCellsCollected++;
             }
             
+            // destroy the other collectable
             Destroy(other.gameObject);
+
         } else if (other.tag == "Blockage")
         {
             // make sure the player has enough cells to break the blockage

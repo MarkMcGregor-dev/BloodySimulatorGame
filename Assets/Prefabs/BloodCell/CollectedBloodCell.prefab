@@ -55,7 +55,7 @@ SphereCollider:
   m_GameObject: {fileID: 785707000776582252}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.73
   m_Center: {x: 0, y: 0, z: 0}
@@ -142,19 +142,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 10b5fe7d931885c4181ae18f3ac1f0c0, type: 3}
   m_PrefabInstance: {fileID: 7710550271503283467}
   m_PrefabAsset: {fileID: 0}
---- !u!135 &8718601744458370781
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7475985617545037914}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.01295962
-  m_Center: {x: -0.000004518777, y: 0, z: -1.164153e-10}
 --- !u!114 &7250932230961602700
 MonoBehaviour:
   m_ObjectHideFlags: 0
