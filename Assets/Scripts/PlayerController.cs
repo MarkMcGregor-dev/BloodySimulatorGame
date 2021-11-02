@@ -109,13 +109,11 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
         } else if (other.tag == "Blockage")
         {
-            Debug.Log("Collided with Blockage");
-
             // make sure the player has enough cells to break the blockage
             if (numCellsCollected >= cellsToBreakBlockage)
             {
                 // break the blockage
-                other.GetComponent<BlockageBehaviour>().BreakBlockage();
+                other.transform.parent.gameObject.GetComponent<BlockageBehaviour>().BreakBlockage();
 
                 // decrement the cellCollected by the cost of breaking a blockage
                 numCellsCollected -= cellsToBreakBlockage;
@@ -125,7 +123,10 @@ public class PlayerController : MonoBehaviour
             } else
             {
                 // kill the player
-                if (PlayerDied != null) PlayerDied();
+                // if (PlayerDied != null) PlayerDied();
+
+                Debug.Log("Dead");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
             }
         }
     }
