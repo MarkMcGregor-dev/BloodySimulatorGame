@@ -1,13 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawner : MonoBehaviour
 {
     private GameObject HostController;
 
+    float minHeartRate;
+    float idealHeartRate;
+    float currentHeartRate;
+    float currentEnergy;
+
     private float radius;
     private int length;
+
+    private GameObject sandwichButton;
 
     private Transform artery;
 
@@ -17,6 +23,12 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         HostController = GameObject.Find("HostController");
+        sandwichButton = GameObject.Find("Sandwich");
+
+        minHeartRate = HostController.GetComponent<HostController>().minHeartRate;
+        idealHeartRate = HostController.GetComponent<HostController>().idealHeartRate;
+        currentHeartRate = HostController.GetComponent<HostController>().currentHeartRate;
+
         artery = transform;
 
         // Rough values relating to the artery itself:
@@ -39,7 +51,31 @@ public class Spawner : MonoBehaviour
         float y;
         float z;
 
-        for (int i = 0; i < 3; i++)
+        int numBloodCells = 2;
+
+        currentEnergy = HostController.GetComponent<HostController>().currentEnergy;
+
+        if (currentEnergy < 20.0f)
+        {
+            numBloodCells = 0;
+        }
+
+        else if (currentHeartRate > 90.0f)
+        {
+            numBloodCells = 2;
+        }
+
+        else
+        {
+            numBloodCells = 1;
+        }
+
+        if (sandwichButton.GetComponent<SandwichButton>().sandwichActivated == true)
+        {
+            numBloodCells = 3;
+        }
+
+        for (int i = 0; i < numBloodCells; i++)
         {
             // Check which way the artery is rotated in relation to world space:
             if(artery.rotation.eulerAngles.y == 0 || artery.rotation.eulerAngles.y == 180)
@@ -89,10 +125,9 @@ public class Spawner : MonoBehaviour
 
     private bool BlockageCheck()
     {
-        float minHeartRate = HostController.GetComponent<HostController>().minHeartRate;
-        float idealHeartRate = HostController.GetComponent<HostController>().idealHeartRate;
-
-        float currentHeartRate = HostController.GetComponent<HostController>().currentHeartRate;
+        minHeartRate = HostController.GetComponent<HostController>().minHeartRate;
+        idealHeartRate = HostController.GetComponent<HostController>().idealHeartRate;
+        currentHeartRate = HostController.GetComponent<HostController>().currentHeartRate;
 
         int random = Random.Range(1, 11);
 
