@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     
     private float traverseSpeedScaler;
     private HostController hostController;
-    private int numCellsCollected;
+    public int numCellsCollected;
 
     private void OnEnable()
     {
@@ -97,15 +97,18 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // if collided with a blood cell and not holding max
-        if (other.tag == "Collectible" && numCellsCollected <= maxNumCells)
+        if (other.tag == "Collectible")
         {
             // call the collectedBloodCell event
             // "announces" that player has collected blood cell
             if (PlayerCollectedBloodCell != null) PlayerCollectedBloodCell();
 
             // increment the number of collected cells
-            numCellsCollected++;
-
+            if (numCellsCollected <= maxNumCells)
+            {
+                numCellsCollected++;
+            }
+            
             Destroy(other.gameObject);
         } else if (other.tag == "Blockage")
         {

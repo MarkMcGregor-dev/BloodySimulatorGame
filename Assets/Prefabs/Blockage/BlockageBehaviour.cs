@@ -14,5 +14,13 @@ public class BlockageBehaviour : MonoBehaviour
 
         // destroy the object
         Destroy(gameObject);
+
+        GameObject Player = GameObject.Find("Player");
+        GameObject CollectedBloodCells = Player.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject;
+
+        for (int i = 0; i < 5; i++)
+        {
+            Destroy(CollectedBloodCells.transform.GetChild(i).gameObject);
+        }
     }
 }

@@ -32,6 +32,11 @@ public class BloodCellCollector : MonoBehaviour
         Debug.Log("COLLECTED");
 
         // create a new blood cell to follow the player
-        GameObject newBloodCell = Instantiate(bloodCellPrefab, transform.position, Quaternion.identity, transform);
+        GameObject Player = GameObject.Find("Player");
+
+        if (Player.GetComponent<PlayerController>().numCellsCollected <= Player.GetComponent<PlayerController>().maxNumCells)
+        {
+            GameObject newBloodCell = Instantiate(bloodCellPrefab, transform.position, Quaternion.identity, transform);
+        }
     }
 }

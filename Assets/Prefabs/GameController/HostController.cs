@@ -84,8 +84,10 @@ public class HostController : MonoBehaviour
             if (currentHeartRate < minHeartRate)
             {
                 // host dies
-                if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
-                hostState = HostState.Dead;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+
+                // if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
+                // hostState = HostState.Dead;
 
             } else
             {
