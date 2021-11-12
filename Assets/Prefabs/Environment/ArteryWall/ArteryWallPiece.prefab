@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   redBloodCell: {fileID: 785707000776582252, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
+  blockage: {fileID: 7955853628933789630, guid: f1849e6ee3c7f8248929a76cbe7b8276, type: 3}
 --- !u!1001 &8514398997584719779
 PrefabInstance:
   m_ObjectHideFlags: 0

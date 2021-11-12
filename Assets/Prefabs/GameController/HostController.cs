@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum HostDeathReason
 {
-    HeartRateHigh,
     HeartRateLow,
     EnergyDepleted
 }
@@ -31,40 +30,48 @@ public class HostController : MonoBehaviour
     // config variables
     [Header("Config")]
     public float minHeartRate   = 30f;
-    public float maxHeartRate   = 220f;
+    public float idealHeartRate = 220f;
     public float maxEnergy      = 100f;
     public float minEnergy      = 0f;
     public float energyDepletionScaler = 1f;
     public float heartRateDeltaScaler = 1f;
+    public float energyFromBloodCells = 5f;
+    public float blockageHeartRateIncrement;
+    public float coffeeHeartRateIncrement;
     [Tooltip("The frequency at which the host is simulated (in seconds)")]
     public float updateRate;
 
     // script variables
-    private HostState hostState;
     [Header("Do not edit")]
     public float currentHeartRate;
     public float desiredHeartRate;
     public float currentEnergy;
+    private HostState hostState;
     private float timeOfLastStep;
 
     private void OnEnable()
     {
         // setup event listeners
         GameController.GameStarted += OnGameStarted;
+        PlayerController.PlayerCollectedBloodCell += OnCollectBloodCell;
+        BlockageBehaviour.BlockageBroken += OnBlockageBroken;
     }
 
     private void OnDisable()
     {
         // clear event listeners
         GameController.GameStarted -= OnGameStarted;
+        PlayerController.PlayerCollectedBloodCell -= OnCollectBloodCell;
+        BlockageBehaviour.BlockageBroken -= OnBlockageBroken;
     }
 
     void Start()
     {
         // setup variables
-        currentHeartRate = (minHeartRate + maxHeartRate) / 2f; // heartrate starts at the average
+        currentHeartRate = idealHeartRate; // heartrate starts at the ideal value
+        desiredHeartRate = idealHeartRate;
         currentEnergy = (maxEnergy - minEnergy) * 1f;
-        hostState = HostState.Dead;
+        hostState = HostState.Alive;
         timeOfLastStep = Time.time;
     }
 
@@ -77,15 +84,10 @@ public class HostController : MonoBehaviour
             if (currentHeartRate < minHeartRate)
             {
                 // host dies
-                if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
-                hostState = HostState.Dead;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
 
-            // check if the heartrate is too high
-            } else if (currentHeartRate > maxHeartRate)
-            {
-                // host dies
-                if (HostDied != null) HostDied(HostDeathReason.HeartRateHigh);
-                hostState = HostState.Dead;
+                // if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
+                // hostState = HostState.Dead;
 
             } else
             {
@@ -94,14 +96,12 @@ public class HostController : MonoBehaviour
                 // check if it is time to simulate a step
                 if (timeSinceLastStep >= updateRate)
                 {
-                    // calculate the adjustment to the energy
-                    float nextEnergyVal = currentEnergy - (currentHeartRate * energyDepletionScaler * timeSinceLastStep);
-                    currentEnergy = Mathf.Clamp(nextEnergyVal, minEnergy, maxEnergy);
-
                     // calculate the adjustment to the heartrate
-                    float energyInfluence = currentEnergy / (maxEnergy - minEnergy); // 0 to 1
-                    desiredHeartRate = Mathf.Lerp(minHeartRate, (minHeartRate + maxHeartRate) / 2f, energyInfluence);
-                    currentHeartRate = Mathf.Lerp(currentHeartRate, desiredHeartRate, heartRateDeltaScaler * Time.deltaTime);
+                    currentHeartRate = currentHeartRate - (heartRateDeltaScaler * timeSinceLastStep);
+
+                    // calculate the adjustment to the energy
+                    currentEnergy = currentEnergy - (Mathf.Min(currentHeartRate, idealHeartRate/2)
+                        * energyDepletionScaler * timeSinceLastStep);
 
                     // fire events
                     if (EnergyChanged != null) EnergyChanged(currentEnergy);
@@ -116,9 +116,39 @@ public class HostController : MonoBehaviour
     private void OnGameStarted()
     {
         // reset variables
-        currentHeartRate = (minHeartRate + maxHeartRate) / 2f; // heartrate starts at the average
+        currentHeartRate = idealHeartRate; // heartrate starts at the ideal value
+        desiredHeartRate = idealHeartRate;
         currentEnergy = (maxEnergy - minEnergy) * 1f;
         hostState = HostState.Alive;
         timeOfLastStep = Time.time;
+    }
+
+    private void OnCollectBloodCell()
+    {
+        // nudge the energy up
+        currentEnergy = Mathf.Clamp(currentEnergy + energyFromBloodCells, minEnergy, maxEnergy);
+    }
+
+    private void OnBlockageBroken()
+    {
+        // nudge the heartrate towards desiredHeartRate
+        currentHeartRate = Mathf.Min(currentHeartRate + blockageHeartRateIncrement, desiredHeartRate);
+    }
+
+    public void OnCoffeeDrink()
+    {
+        Debug.Log("SIP");
+        currentHeartRate = Mathf.Min(currentHeartRate + coffeeHeartRateIncrement, desiredHeartRate);
+
+        GameObject coffee = GameObject.Find("Coffee");
+        coffee.GetComponent<UnityEngine.UI.Button>().interactable = false;
+
+        Invoke("ActivateCoffeeButton", 25.0f);
+    }
+
+    private void ActivateCoffeeButton()
+    {
+        GameObject coffee = GameObject.Find("Coffee");
+        coffee.GetComponent<UnityEngine.UI.Button>().interactable = true;
     }
 }

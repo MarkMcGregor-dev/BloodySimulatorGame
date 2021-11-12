@@ -4,20 +4,49 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public delegate void PlayerCollectDelegate();
+    public static event PlayerCollectDelegate PlayerCollectedBloodCell;
+
+    public delegate void PlayerDeathDelegate();
+    public static event PlayerDeathDelegate PlayerDied;
+
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     PlayerState currentState = PlayerState.Idle;
-    Vector3 playerPos;
 
     public string translateInputAxis = "Vertical";
     public string rotateInputAxis = "Horizontal";
 
-    public float rotationRate = 360;    // allows 360 degrees of rotation
-    public float moveForce = 1;         // speed at which player moves
+    [Header("Movement Config")]
+    public float traverseSpeed;
+    public float moveSpeed;
+    public float movementRadius;
+    [Header("Stats config")]
+    public int maxNumCells;
+    public int cellsToBreakBlockage;
+    
+    private float traverseSpeedScaler;
+    private HostController hostController;
+    public int numCellsCollected;
+
+    private void OnEnable()
+    {
+        // setup event listeners
+        HostController.HeartRateChanged += OnHeartRateChanged;
+    }
+
+    private void OnDisable()
+    {
+        // cleanup event listeners
+        HostController.HeartRateChanged -= OnHeartRateChanged;
+    }
 
     /*--- START ---*/
     void Start()
     {
+        // setup variables
         currentState = PlayerState.Idle;
+        traverseSpeedScaler = 0f;
+        hostController = GameObject.FindObjectOfType<HostController>();
     }
 
     /*--- UPDATE ---*/
@@ -27,52 +56,88 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case PlayerState.Idle:
-                playerPos = GameObject.Find("Player").transform.position;
                 break;
 
             case PlayerState.Moving:
-                break;
-
-            case PlayerState.Collision:
-                Debug.Log("player collision!");
                 break;
 
             default:
                 break;
         }
 
-        float translateAxis = Input.GetAxis(translateInputAxis);
-        float rotateAxis = Input.GetAxis(rotateInputAxis);
+        float horizontalInput = Input.GetAxis(rotateInputAxis);
+        float verticalInput = Input.GetAxis(translateInputAxis);
+        
+        // add the forwards movement to the player
+        Vector3 forwardMovement = transform.forward * traverseSpeed * traverseSpeedScaler * Time.deltaTime;
+        transform.Translate(forwardMovement, Space.World);
 
-        playerInput(translateAxis, rotateAxis);
-
+        // add the controlled movement to the player
+        DoControlledMovement(horizontalInput, verticalInput);
     }
 
-    /*--- CONTROLS ---*/
-    private void playerInput(float translateInput, float rotateInput)
+    private void DoControlledMovement(float xVal, float yVal)
     {
-        playerTranslate(translateInput);
-        playerRotate(rotateInput);
-    }
-    private void playerTranslate(float input)
-    {
-        transform.Translate(Vector3.up * input * moveForce);
-        currentState = PlayerState.Moving;
-    }
-    private void playerRotate(float input)
-    {
-        transform.Rotate(0, input * rotationRate * Time.deltaTime, 0);
-        currentState = PlayerState.Moving;
+        // get the position of the player on the XY plane
+        Vector2 currentXYPos = new Vector2(transform.position.x, transform.position.y);
+
+        // calculate the 2d controlled movement
+        Vector2 controlledMovement = Vector2.ClampMagnitude(new Vector2(xVal, yVal), 1);
+
+        // clamp the movement to the radius of the artery (playable area)
+        controlledMovement = Vector2.ClampMagnitude(currentXYPos + controlledMovement, movementRadius) - currentXYPos;
+
+        // apply the movement
+        transform.Translate(controlledMovement * hostController.currentHeartRate * moveSpeed * Time.deltaTime);
+
+        Debug.DrawRay(transform.position, controlledMovement, Color.white);
     }
 
     /*--- COLLISIONS ---*/
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Collectible")
+        // if collided with a blood cell and not holding max
+        if (other.tag == "Collectible")
         {
-            currentState = PlayerState.Collision;
+            // call the collectedBloodCell event
+            // "announces" that player has collected blood cell
+            if (PlayerCollectedBloodCell != null) PlayerCollectedBloodCell();
+
+            // increment the number of collected cells
+            if (numCellsCollected <= maxNumCells)
+            {
+                numCellsCollected++;
+            }
+            
+            // destroy the other collectable
             Destroy(other.gameObject);
+
+        } else if (other.tag == "Blockage")
+        {
+            // make sure the player has enough cells to break the blockage
+            if (numCellsCollected >= cellsToBreakBlockage)
+            {
+                // break the blockage
+                other.transform.parent.gameObject.GetComponent<BlockageBehaviour>().BreakBlockage();
+
+                // decrement the cellCollected by the cost of breaking a blockage
+                numCellsCollected -= cellsToBreakBlockage;
+
+                Debug.Log("Blockage Broken!");
+
+            } else
+            {
+                // kill the player
+                // if (PlayerDied != null) PlayerDied();
+
+                Debug.Log("Dead");
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+            }
         }
     }
 
+    private void OnHeartRateChanged(float newHeartRate)
+    {
+        traverseSpeedScaler = newHeartRate / 10f;
+    }
 }
