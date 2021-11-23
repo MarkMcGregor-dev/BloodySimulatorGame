@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
     public delegate void PlayerDeathDelegate();
     public static event PlayerDeathDelegate PlayerDied;
 
+    public AudioSource collect;
+    public AudioSource destroy;
+    public AudioSource powerUp;
+
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     PlayerState currentState = PlayerState.Idle;
 
@@ -99,6 +103,7 @@ public class PlayerController : MonoBehaviour
         // if collided with a blood cell and not holding max
         if (other.tag == "Collectible")
         {
+            collect.Play();
             // call the collectedBloodCell event
             // "announces" that player has collected blood cell
             if (PlayerCollectedBloodCell != null) PlayerCollectedBloodCell();
@@ -114,6 +119,7 @@ public class PlayerController : MonoBehaviour
 
         } else if (other.tag == "Blockage")
         {
+            destroy.Play();
             // make sure the player has enough cells to break the blockage
             if (numCellsCollected >= cellsToBreakBlockage)
             {
