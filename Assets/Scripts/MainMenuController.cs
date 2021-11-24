@@ -19,38 +19,38 @@ public class MainMenuController : MonoBehaviour
     void Start()
     {
         // setup variables
-        startButton = GameObject.Find("Start Button").GetComponent<Button>();
-        startButton.onClick.AddListener(StartPressed);
+        //startButton = GameObject.Find("Start Button").GetComponent<Button>();
+        //startButton.onClick.AddListener(StartPressed);
 
-        howToPlayButton = GameObject.Find("HowTo Button").GetComponent<Button>();
-        howToPlayButton.onClick.AddListener(HowToPressed);
+        //howToPlayButton = GameObject.Find("HowTo Button").GetComponent<Button>();
+        //howToPlayButton.onClick.AddListener(HowToPressed);
 
-        optionsButton = GameObject.Find("Options Button").GetComponent<Button>();
-        optionsButton.onClick.AddListener(OptionsPressed);
+        //optionsButton = GameObject.Find("Options Button").GetComponent<Button>();
+        //optionsButton.onClick.AddListener(OptionsPressed);
 
-        backButton = GameObject.Find("Back Button").GetComponent<Button>();
-        backButton.onClick.AddListener(BackPressed);
+        //backButton = GameObject.Find("Back Button").GetComponent<Button>();
+        //backButton.onClick.AddListener(BackPressed);
 
     }
 
-    private void StartPressed()
+    public void StartPressed()
     {
         // go to the in-game scene when pressed
         SceneManager.LoadScene(PlayScene);
     }
 
-    private void HowToPressed()
+    public void HowToPressed()
     {
         // go to the in-game scene when pressed
         SceneManager.LoadScene(InstructionsScene);
     }
 
-    private void OptionsPressed()
+    public void OptionsPressed()
     {
         // go to the in-game scene when pressed
         SceneManager.LoadScene(OptionsScene);
     }
-    private void BackPressed()
+    public void BackPressed()
     {
         // go to the in-game scene when pressed
         SceneManager.LoadScene(BackScene);
