@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SplineMesh;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,20 +29,27 @@ public class PlayerController : MonoBehaviour
     public int maxNumCells;
     public int cellsToBreakBlockage;
     
+    [Header("Do Not Touch")]
+    private float distanceInLevel;
     private float traverseSpeedScaler;
     private HostController hostController;
     public int numCellsCollected;
+    private LevelGeneratorV2 levelGenerator;
+    private Spline levelSpline;
+    private Vector2 localPosition;
 
     private void OnEnable()
     {
         // setup event listeners
         HostController.HeartRateChanged += OnHeartRateChanged;
+        LevelGeneratorV2.LevelSectionRemoved += OnLevelSectionRemoved;
     }
 
     private void OnDisable()
     {
         // cleanup event listeners
         HostController.HeartRateChanged -= OnHeartRateChanged;
+        LevelGeneratorV2.LevelSectionRemoved += OnLevelSectionRemoved;
     }
 
     /*--- START ---*/
@@ -51,30 +59,30 @@ public class PlayerController : MonoBehaviour
         currentState = PlayerState.Idle;
         traverseSpeedScaler = 0f;
         hostController = GameObject.FindObjectOfType<HostController>();
+        distanceInLevel = 0f;
+        levelGenerator = FindObjectOfType<LevelGeneratorV2>();
+        levelSpline = FindObjectOfType<Spline>();
+        localPosition = Vector2.zero;
     }
 
     /*--- UPDATE ---*/
     void Update()
     {
-        /*--- PLAYER STATES---*/
-        switch (currentState)
-        {
-            case PlayerState.Idle:
-                break;
-
-            case PlayerState.Moving:
-                break;
-
-            default:
-                break;
-        }
-
         float horizontalInput = Input.GetAxis(rotateInputAxis);
         float verticalInput = Input.GetAxis(translateInputAxis);
-        
+
+        // calculate the new distance in the level
+        distanceInLevel += traverseSpeed * traverseSpeedScaler * Time.deltaTime;
+
+        // get the sample on the curve where the player should be
+        CurveSample curveSample = levelSpline.GetSampleAtDistance(distanceInLevel);
+
+        // apply the forwards movement to the player
+        transform.SetPositionAndRotation(curveSample.location, curveSample.Rotation);
+
         // add the forwards movement to the player
-        Vector3 forwardMovement = transform.forward * traverseSpeed * traverseSpeedScaler * Time.deltaTime;
-        transform.Translate(forwardMovement, Space.World);
+        //Vector3 forwardMovement = transform.forward * traverseSpeed * traverseSpeedScaler * Time.deltaTime;
+        //transform.Translate(forwardMovement, Space.World);
 
         // add the controlled movement to the player
         DoControlledMovement(horizontalInput, verticalInput);
@@ -83,18 +91,22 @@ public class PlayerController : MonoBehaviour
     private void DoControlledMovement(float xVal, float yVal)
     {
         // get the position of the player on the XY plane
-        Vector2 currentXYPos = new Vector2(transform.position.x, transform.position.y);
+        //Vector2 currentXYPos = new Vector2(transform.position.x, transform.position.y);
 
         // calculate the 2d controlled movement
         Vector2 controlledMovement = Vector2.ClampMagnitude(new Vector2(xVal, yVal), 1);
 
         // clamp the movement to the radius of the artery (playable area)
-        controlledMovement = Vector2.ClampMagnitude(currentXYPos + controlledMovement, movementRadius) - currentXYPos;
+        controlledMovement = Vector2.ClampMagnitude(localPosition + controlledMovement, movementRadius) - localPosition;
 
         // apply the movement
-        transform.Translate(controlledMovement * hostController.currentHeartRate * moveSpeed * Time.deltaTime);
+        localPosition += controlledMovement * hostController.currentHeartRate * moveSpeed * Time.deltaTime;
 
-        Debug.DrawRay(transform.position, controlledMovement, Color.white);
+        Vector3 localTranslation =
+            (transform.right * localPosition.x) +
+            (transform.up * localPosition.y);
+
+        transform.Translate(localTranslation);
     }
 
     /*--- COLLISIONS ---*/
@@ -145,5 +157,15 @@ public class PlayerController : MonoBehaviour
     private void OnHeartRateChanged(float newHeartRate)
     {
         traverseSpeedScaler = newHeartRate / 10f;
+    }
+
+    private void OnLevelSectionRemoved(float curveLength)
+    {
+        float previousDistance = distanceInLevel;
+
+        // offset the distance travelled by the gap between points
+        distanceInLevel -= curveLength;
+
+        Debug.Log("Previous distance: " + previousDistance + "\n\tNew Distance: " + distanceInLevel);
     }
 }
