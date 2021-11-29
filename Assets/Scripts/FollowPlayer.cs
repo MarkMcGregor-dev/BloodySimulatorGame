@@ -26,7 +26,7 @@ public class FollowPlayer : MonoBehaviour
         // determine the new position of the object (depending on if using lerping or not)
         Vector3 newPosition = usePositionLerp
             ? Vector3.Lerp(transform.position, player.transform.position + startPos, positionLerpStrength * Time.deltaTime)
-            : player.transform.position;
+            : player.transform.position + startPos;
 
         transform.position = newPosition;
 

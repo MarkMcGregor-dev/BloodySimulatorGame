@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public int cellsToBreakBlockage;
     
     [Header("Do Not Touch")]
-    private float distanceInLevel;
+    public float distanceInLevel;
     private float traverseSpeedScaler;
     private HostController hostController;
     public int numCellsCollected;
