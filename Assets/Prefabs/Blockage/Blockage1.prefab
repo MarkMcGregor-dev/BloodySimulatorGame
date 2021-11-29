@@ -115,6 +115,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blockage1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d637679be89783f44bee585ef1afa914, type: 3}
+      propertyPath: m_TagString
+      value: Blockage
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d637679be89783f44bee585ef1afa914, type: 3}
 --- !u!1 &3108848537086374853 stripped

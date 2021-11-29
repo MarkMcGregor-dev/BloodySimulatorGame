@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3464540997345825754}
   - component: {fileID: -5747406248610266123}
+  - component: {fileID: -6924743934310488653}
   m_Layer: 0
   m_Name: Blockage3
   m_TagString: Blockage
@@ -44,6 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f27ed27db961c43a7b14d07d40b3ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &-6924743934310488653
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333602826685753437}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1001 &3689995678613034270
 PrefabInstance:
   m_ObjectHideFlags: 0

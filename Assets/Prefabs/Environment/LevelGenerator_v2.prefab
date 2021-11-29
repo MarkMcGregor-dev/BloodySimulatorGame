@@ -103,11 +103,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40726bd7876df454895807e1468373df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodCellPrefab: {fileID: 785707000776582252, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
   distanceFromPlayer: 200
-  spawnFrequency: 15
-  maxSpawnAmount: 3
-  spawnRadius: 7.5
+  bloodCellPrefab: {fileID: 785707000776582252, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
+  cellSpawnFrequency: 20
+  lowCellCount: 0
+  normalCellCount: 1
+  highCellCount: 2
+  cellSpawnRadius: 8
+  blockagePrefab: {fileID: 1333602826685753437, guid: be5fd3958aa1a454bbf3a3c63d9ebc4b, type: 3}
+  blockageSpawnFrequency: 50
+  blockageSpawnRadius: 15
+--- !u!1 &7135114946844079490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1774448243475864064}
+  m_Layer: 0
+  m_Name: Blockages
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1774448243475864064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7135114946844079490}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 37.670853, y: -0.85601425, z: 287.7573}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4062569409128035293}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7610090765548607001
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +176,7 @@ Transform:
   - {fileID: 8849036501215574443}
   - {fileID: 2532150587257392229}
   - {fileID: 616734218365862259}
+  - {fileID: 1774448243475864064}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

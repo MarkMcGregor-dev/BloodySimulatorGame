@@ -41,7 +41,6 @@ public class Spawner : MonoBehaviour
         {
             SpawnBlockage();
         }
-
     }
 
     private void SpawnBloodCells()
