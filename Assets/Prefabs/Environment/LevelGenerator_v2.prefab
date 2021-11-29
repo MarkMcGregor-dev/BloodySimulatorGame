@@ -110,7 +110,7 @@ MonoBehaviour:
   normalCellCount: 1
   highCellCount: 2
   cellSpawnRadius: 8
-  blockagePrefab: {fileID: 1333602826685753437, guid: be5fd3958aa1a454bbf3a3c63d9ebc4b, type: 3}
+  blockagePrefab: {fileID: 7955853628933789630, guid: f1849e6ee3c7f8248929a76cbe7b8276, type: 3}
   blockageSpawnFrequency: 50
   blockageSpawnRadius: 15
 --- !u!1 &7135114946844079490
