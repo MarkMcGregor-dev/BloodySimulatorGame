@@ -41,8 +41,6 @@ public class PostProcessingController : MonoBehaviour
 
         float colorValue = effectCurve.Evaluate(deathValue);
 
-        Debug.Log(colorValue.ToString());
-
         float newColorValue = Mathf.Lerp(-100f, 0f, colorValue);
         colorAdjustments.saturation.value = newColorValue;
 
