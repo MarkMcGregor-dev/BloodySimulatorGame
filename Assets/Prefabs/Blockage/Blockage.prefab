@@ -122,9 +122,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8054740078019911121}
   - component: {fileID: -4555020114748992925}
+  - component: {fileID: 6981392359942865637}
+  - component: {fileID: -8796879848304597283}
   m_Layer: 0
   m_Name: Blockage
-  m_TagString: Untagged
+  m_TagString: Blockage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,3 +158,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f27ed27db961c43a7b14d07d40b3ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &6981392359942865637
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7955853628933789630}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
+--- !u!54 &-8796879848304597283
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7955853628933789630}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
