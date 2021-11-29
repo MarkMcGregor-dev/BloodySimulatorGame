@@ -30,13 +30,13 @@ public class ScoreCounter : MonoBehaviour
     private void OnPlayerCollectedBloodCell()
     {
         totalScore = totalScore + bloodCellScore;
-        scoreValue.text = "Score: " + totalScore;
+        scoreValue.text = "" + totalScore;
     }
     
     // this will be used when the player collides with blockages
     private void OnBlockageBroken()
     {
         totalScore = totalScore + blockageScore;
-        scoreValue.text = "Score: " + totalScore;
+        scoreValue.text = "" + totalScore;
     }
 }

@@ -18,6 +18,6 @@ public class HeartrateText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        heartRate.text = "Heart Rate: " + Mathf.Round(HostController.GetComponent<HostController>().currentHeartRate * 100f) / 100f;
+        heartRate.text = "" + Mathf.Round(HostController.GetComponent<HostController>().currentHeartRate);
     }
 }
