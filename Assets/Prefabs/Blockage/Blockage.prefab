@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 1182442178441243879}
   m_Layer: 0
   m_Name: BlockageGlow
-  m_TagString: Blockage
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 9210029038338268107}
   m_Layer: 0
   m_Name: Blockage
-  m_TagString: Untagged
+  m_TagString: BlockageContainer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -301,4 +301,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f27ed27db961c43a7b14d07d40b3ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockageMat: {fileID: 2100000, guid: dff889e4e30e6904c85f642f41328695, type: 2}
