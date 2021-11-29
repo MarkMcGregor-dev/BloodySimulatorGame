@@ -10,26 +10,17 @@ public class MainMenuController : MonoBehaviour
     public string InstructionsScene;
     public string OptionsScene;
     public string BackScene;
+    public string RetryScene;
 
     private Button startButton;
     private Button howToPlayButton;
     private Button optionsButton;
     private Button backButton;
+    private Button retryButton;
+
 
     void Start()
     {
-        // setup variables
-        //startButton = GameObject.Find("Start Button").GetComponent<Button>();
-        //startButton.onClick.AddListener(StartPressed);
-
-        //howToPlayButton = GameObject.Find("HowTo Button").GetComponent<Button>();
-        //howToPlayButton.onClick.AddListener(HowToPressed);
-
-        //optionsButton = GameObject.Find("Options Button").GetComponent<Button>();
-        //optionsButton.onClick.AddListener(OptionsPressed);
-
-        //backButton = GameObject.Find("Back Button").GetComponent<Button>();
-        //backButton.onClick.AddListener(BackPressed);
 
     }
 
@@ -54,5 +45,10 @@ public class MainMenuController : MonoBehaviour
     {
         // go to the in-game scene when pressed
         SceneManager.LoadScene(BackScene);
+    }
+
+    public void RetryPressed()
+    {
+        SceneManager.LoadScene(RetryScene);
     }
 }
