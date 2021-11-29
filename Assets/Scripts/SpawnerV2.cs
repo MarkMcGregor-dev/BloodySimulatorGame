@@ -129,8 +129,6 @@ public class SpawnerV2 : MonoBehaviour
         // create the new blockage
         GameObject newBlockage = Instantiate(blockagePrefab, spawnLocation, transform.rotation, blockageSpawnParent);
 
-        Debug.Log(rotationDegree);
-
         // rotate the blockage according to the random rotation
         newBlockage.transform.RotateAround(transform.position, transform.forward, rotationDegree);
 
