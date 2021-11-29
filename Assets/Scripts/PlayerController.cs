@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
             if (numCellsCollected >= cellsToBreakBlockage)
             {
                 // break the blockage
-                other.transform.parent.gameObject.GetComponent<BlockageBehaviour>().BreakBlockage();
+                other.gameObject.GetComponent<BlockageBehaviour>().BreakBlockage();
 
                 // decrement the cellCollected by the cost of breaking a blockage
                 numCellsCollected -= cellsToBreakBlockage;

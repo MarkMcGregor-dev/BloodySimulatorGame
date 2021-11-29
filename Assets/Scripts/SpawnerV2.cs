@@ -124,13 +124,15 @@ public class SpawnerV2 : MonoBehaviour
         // get a random rotation for the blockage to be spawned at
         float rotationDegree = Random.Range(0f, 360f);
 
-        Vector3 spawnLocation = transform.position;
+        Vector3 spawnLocation = transform.position + (transform.up * blockageSpawnRadius);
 
         // create the new blockage
         GameObject newBlockage = Instantiate(blockagePrefab, spawnLocation, transform.rotation, blockageSpawnParent);
 
+        Debug.Log(rotationDegree);
+
         // rotate the blockage according to the random rotation
-        newBlockage.transform.Rotate(transform.forward, rotationDegree);
+        newBlockage.transform.RotateAround(transform.position, transform.forward, rotationDegree);
 
         // update the distance of the last spawn
         distanceOfLastBlockageSpawn = distanceTravelled;

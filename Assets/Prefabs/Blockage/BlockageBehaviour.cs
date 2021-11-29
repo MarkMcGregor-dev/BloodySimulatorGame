@@ -7,22 +7,24 @@ public class BlockageBehaviour : MonoBehaviour
     public delegate void BlockageBreakDelegate();
     public static event BlockageBreakDelegate BlockageBroken;
 
-    private GameObject player;
+    public Color breakableColor;
+    public float breakableColorEmission;
 
+    private GameObject player;
     private Material blockageMat;
     private Color c;
     private float a = 0.0f;
     private bool goingUp;
 
-    private Color transparent = new Color(27, 229, 108, 0);
+    private Color transparent = new Color(27/255f, 229/255f, 108/255f, 0.5f);
 
     private void Start()
     {
         player = GameObject.Find("Player");
 
-        blockageMat = transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        blockageMat = transform.GetComponent<MeshRenderer>().material;
 
-        c = blockageMat.GetColor("_BaseColor");
+        c = blockageMat.GetColor("Color_8a2c3fc848354067aa332bfb7bd854fc");
         goingUp = true;
     }
 
@@ -37,12 +39,12 @@ public class BlockageBehaviour : MonoBehaviour
             else if (c.a <= 0.0f)
                 goingUp = true;
 
-           blockageMat.SetColor("_BaseColor", c);
+           blockageMat.SetColor("Color_8a2c3fc848354067aa332bfb7bd854fc", breakableColor * breakableColorEmission);
         }
 
         else
         {
-            blockageMat.SetColor("_BaseColor", transparent);
+            blockageMat.SetColor("Color_8a2c3fc848354067aa332bfb7bd854fc", c);
         }
         
     }
