@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 488649893326688371}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -215,6 +215,7 @@ MonoBehaviour:
   movementRadius: 9
   maxNumCells: 20
   cellsToBreakBlockage: 5
+  distanceInLevel: 0
   numCellsCollected: 0
 --- !u!54 &488649893326688371
 Rigidbody:
@@ -701,6 +702,10 @@ PrefabInstance:
     - target: {fileID: 785707000776582252, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
       propertyPath: m_Name
       value: BloodCell
+      objectReference: {fileID: 0}
+    - target: {fileID: 785707000776582252, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5164207858139856342, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
       propertyPath: m_RootOrder
