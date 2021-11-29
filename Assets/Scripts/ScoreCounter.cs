@@ -7,7 +7,7 @@ public class ScoreCounter : MonoBehaviour
 {
     public Text scoreValue;
 
-    public float totalScore;
+    public static float totalScore;
     private float bloodCellScore = 1;
     private float blockageScore = 5;
 

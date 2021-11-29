@@ -84,12 +84,12 @@ public class HostController : MonoBehaviour
             if (currentHeartRate < minHeartRate)
             {
                 // host dies
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+                if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
+                hostState = HostState.Dead;
+                UnityEngine.SceneManagement.SceneManager.LoadScene("EndScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
 
-                // if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
-                // hostState = HostState.Dead;
-
-            } else
+            }
+            else
             {
                 float timeSinceLastStep = Time.time - timeOfLastStep;
 
@@ -111,6 +111,7 @@ public class HostController : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void OnGameStarted()

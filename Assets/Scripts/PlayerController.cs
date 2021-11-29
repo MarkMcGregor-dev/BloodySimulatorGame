@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource powerUp;
 
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
-    PlayerState currentState = PlayerState.Idle;
+    //PlayerState currentState = PlayerState.Idle;
 
     public string translateInputAxis = "Vertical";
     public string rotateInputAxis = "Horizontal";
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         // setup variables
-        currentState = PlayerState.Idle;
+        //currentState = PlayerState.Idle;
         traverseSpeedScaler = 0f;
         hostController = GameObject.FindObjectOfType<HostController>();
         distanceInLevel = 0f;
@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
             } else
             {
                 // kill the player
-                // if (PlayerDied != null) PlayerDied();
+                //if (PlayerDied != null) PlayerDied();
 
                 Debug.Log("Dead");
                 //UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);

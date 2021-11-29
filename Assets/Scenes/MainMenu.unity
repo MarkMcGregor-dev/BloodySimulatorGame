@@ -600,7 +600,7 @@ RectTransform:
   m_GameObject: {fileID: 348042569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.0000028415}
-  m_LocalScale: {x: 1.245, y: 0.83, z: 0.83}
+  m_LocalScale: {x: 1.53135, y: 1.0209, z: 1.0209}
   m_Children:
   - {fileID: 1804583469}
   m_Father: {fileID: 258000314}
@@ -608,7 +608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3, y: -24}
+  m_AnchoredPosition: {x: -3, y: -17}
   m_SizeDelta: {x: 391.1, y: 108.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &348042571
@@ -1486,7 +1486,7 @@ RectTransform:
   m_GameObject: {fileID: 900839893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.0000023502}
-  m_LocalScale: {x: 1.1531262, y: 0.7687508, z: 0.7687508}
+  m_LocalScale: {x: 1.4183453, y: 0.9455635, z: 0.9455635}
   m_Children:
   - {fileID: 423567098}
   m_Father: {fileID: 258000314}
@@ -1494,7 +1494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.0000021, y: -312.00012}
+  m_AnchoredPosition: {x: -3.0000021, y: -372}
   m_SizeDelta: {x: 391.1, y: 108.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &900839895
@@ -2611,7 +2611,7 @@ RectTransform:
   m_GameObject: {fileID: 1632379569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.0000023502}
-  m_LocalScale: {x: 1.1531262, y: 0.7687508, z: 0.7687508}
+  m_LocalScale: {x: 1.4183453, y: 0.9455635, z: 0.9455635}
   m_Children:
   - {fileID: 969548555}
   m_Father: {fileID: 258000314}
@@ -2619,7 +2619,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.0000021, y: -214}
+  m_AnchoredPosition: {x: -3.0000021, y: -251}
   m_SizeDelta: {x: 391.1, y: 108.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1632379571
