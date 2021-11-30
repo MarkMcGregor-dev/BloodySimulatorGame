@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         //currentState = PlayerState.Idle;
         traverseSpeedScaler = 0f;
         hostController = GameObject.FindObjectOfType<HostController>();
-        distanceInLevel = 0f;
+        distanceInLevel = 30f;
         levelGenerator = FindObjectOfType<LevelGeneratorV2>();
         levelSpline = FindObjectOfType<Spline>();
         localPosition = Vector2.zero;
