@@ -141,11 +141,11 @@ MonoBehaviour:
   highCellCount: 2
   cellSpawnRadius: 8
   blockagePrefab: {fileID: 278094807567027425, guid: 11bb7c51a658ad6409b4fcdd3d9760ec, type: 3}
-  blockageSpawnFrequency: 133
+  blockageSpawnFrequency: 90
   blockageSpawnRadius: 8
   sandwichPrefab: {fileID: 3863019695559249751, guid: 31e45745108cb004181121dde9b57cdb, type: 3}
   coffeePrefab: {fileID: 1070975529175580162, guid: fa3bb1bb30b40d749878238f0c6a490d, type: 3}
-  powerupSpawnFrequency: 1500
+  powerupSpawnFrequency: 1300
   powerupSpawnRadius: 8
 --- !u!1 &7135114946844079490
 GameObject:
