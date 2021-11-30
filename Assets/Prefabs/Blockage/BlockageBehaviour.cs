@@ -18,6 +18,8 @@ public class BlockageBehaviour : MonoBehaviour
 
     private Color transparent = new Color(27/255f, 229/255f, 108/255f, 0.5f);
 
+    private int cellsToBreakBlockage;
+
     private void Start()
     {
         player = GameObject.Find("Player");
@@ -26,11 +28,13 @@ public class BlockageBehaviour : MonoBehaviour
 
         c = blockageMat.GetColor("Color_8a2c3fc848354067aa332bfb7bd854fc");
         goingUp = true;
+
+        cellsToBreakBlockage = player.GetComponent<PlayerController>().cellsToBreakBlockage;
     }
 
     private void Update()
     {
-        if (player.GetComponent<PlayerController>().numCellsCollected >= 5)
+        if (player.GetComponent<PlayerController>().numCellsCollected >= cellsToBreakBlockage)
         {
             c.a = goingUp ? .005f + c.a : c.a - .005f;
 
@@ -59,7 +63,7 @@ public class BlockageBehaviour : MonoBehaviour
 
         GameObject CollectedBloodCells = player.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < cellsToBreakBlockage; i++)
         {
             Destroy(CollectedBloodCells.transform.GetChild(i).gameObject);
         }

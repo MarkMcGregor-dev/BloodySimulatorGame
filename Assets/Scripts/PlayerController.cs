@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource powerUp;
 
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
-    PlayerState currentState = PlayerState.Idle;
+    //PlayerState currentState = PlayerState.Idle;
 
     public string translateInputAxis = "Vertical";
     public string rotateInputAxis = "Horizontal";
@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
     private LevelGeneratorV2 levelGenerator;
     private Spline levelSpline;
     private Vector2 localPosition;
+    private GameObject spawner;
+    private IEnumerator coroutine;
+    private GameObject hostControllerInstance;
 
     private void OnEnable()
     {
@@ -56,13 +59,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         // setup variables
-        currentState = PlayerState.Idle;
+        //currentState = PlayerState.Idle;
         traverseSpeedScaler = 0f;
         hostController = GameObject.FindObjectOfType<HostController>();
-        distanceInLevel = 0f;
+        distanceInLevel = 30f;
         levelGenerator = FindObjectOfType<LevelGeneratorV2>();
         levelSpline = FindObjectOfType<Spline>();
         localPosition = Vector2.zero;
+        spawner = GameObject.Find("Spawner");
+        hostControllerInstance = GameObject.Find("HostController");
     }
 
     /*--- UPDATE ---*/
@@ -129,7 +134,9 @@ public class PlayerController : MonoBehaviour
             // destroy the other collectable
             Destroy(other.gameObject);
 
-        } else if (other.tag == "Blockage")
+        } 
+        
+        else if (other.tag == "Blockage")
         {
             destroy.Play();
             // make sure the player has enough cells to break the blockage
@@ -141,18 +148,43 @@ public class PlayerController : MonoBehaviour
                 // decrement the cellCollected by the cost of breaking a blockage
                 numCellsCollected -= cellsToBreakBlockage;
 
-                Debug.Log("Blockage Broken!");
-
             } else
             {
                 // kill the player
-                // if (PlayerDied != null) PlayerDied();
+                //if (PlayerDied != null) PlayerDied();
 
-                Debug.Log("Dead");
                 //UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
                 UnityEngine.SceneManagement.SceneManager.LoadScene("EndScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
+
+        else if (other.tag == "Sandwich")
+        {
+            float originalSpawnFrequency = spawner.GetComponent<SpawnerV2>().cellSpawnFrequency;
+            coroutine = SandwichEffect(originalSpawnFrequency);
+            StartCoroutine(coroutine);
+           
+            Destroy(other.gameObject);
+        }
+
+        else if (other.tag == "Coffee")
+        {
+            hostControllerInstance.GetComponent<HostController>().OnCoffeeDrink();
+
+            Destroy(other.gameObject);
+        }
+    }
+
+    private IEnumerator SandwichEffect(float originalSpawnFrequency)
+    {
+
+        spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = 5f;
+
+        yield return new WaitForSeconds(2.5f);
+
+        spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = originalSpawnFrequency;
+
+        StopCoroutine(coroutine);
     }
 
     private void OnHeartRateChanged(float newHeartRate)

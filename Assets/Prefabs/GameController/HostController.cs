@@ -36,8 +36,8 @@ public class HostController : MonoBehaviour
     public float energyDepletionScaler = 1f;
     public float heartRateDeltaScaler = 1f;
     public float energyFromBloodCells = 5f;
-    public float blockageHeartRateIncrement;
-    public float coffeeHeartRateIncrement;
+    public float blockageHeartRateIncrement = 20f;
+    public float coffeeHeartRateIncrement= 40f;
     [Tooltip("The frequency at which the host is simulated (in seconds)")]
     public float updateRate;
 
@@ -84,12 +84,12 @@ public class HostController : MonoBehaviour
             if (currentHeartRate < minHeartRate)
             {
                 // host dies
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+                if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
+                hostState = HostState.Dead;
+                UnityEngine.SceneManagement.SceneManager.LoadScene("EndScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
 
-                // if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
-                // hostState = HostState.Dead;
-
-            } else
+            }
+            else
             {
                 float timeSinceLastStep = Time.time - timeOfLastStep;
 
@@ -111,6 +111,7 @@ public class HostController : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void OnGameStarted()
@@ -137,18 +138,6 @@ public class HostController : MonoBehaviour
 
     public void OnCoffeeDrink()
     {
-        Debug.Log("SIP");
         currentHeartRate = Mathf.Min(currentHeartRate + coffeeHeartRateIncrement, desiredHeartRate);
-
-        GameObject coffee = GameObject.Find("Coffee");
-        coffee.GetComponent<UnityEngine.UI.Button>().interactable = false;
-
-        Invoke("ActivateCoffeeButton", 25.0f);
-    }
-
-    private void ActivateCoffeeButton()
-    {
-        GameObject coffee = GameObject.Find("Coffee");
-        coffee.GetComponent<UnityEngine.UI.Button>().interactable = true;
     }
 }

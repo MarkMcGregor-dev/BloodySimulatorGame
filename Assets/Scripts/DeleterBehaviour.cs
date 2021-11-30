@@ -10,8 +10,7 @@ public class DeleterBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // check if this object is supposed to be deleted
-        if (other.CompareTag("Environment") || other.CompareTag("Collectible") || other.CompareTag("BlockageContainer")
-            || other.CompareTag("Blockage"))
+        if (other.CompareTag("Environment") || other.CompareTag("Collectible") || other.CompareTag("Blockage"))
         {
             // delete the other object
             Destroy(other.gameObject);

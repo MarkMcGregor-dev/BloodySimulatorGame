@@ -214,7 +214,7 @@ MonoBehaviour:
   moveSpeed: 0.075
   movementRadius: 9
   maxNumCells: 20
-  cellsToBreakBlockage: 5
+  cellsToBreakBlockage: 10
   distanceInLevel: 0
   numCellsCollected: 0
 --- !u!54 &488649893326688371

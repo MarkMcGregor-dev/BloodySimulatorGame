@@ -60,6 +60,36 @@ Transform:
   m_Father: {fileID: 4062569409128035293}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1893901508108757164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7407515619901679360}
+  m_Layer: 0
+  m_Name: Powerups
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7407515619901679360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893901508108757164}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4062569409128035293}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5921704268135223006
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,14 +135,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceFromPlayer: 200
   bloodCellPrefab: {fileID: 785707000776582252, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
-  cellSpawnFrequency: 20
+  cellSpawnFrequency: 40
   lowCellCount: 0
   normalCellCount: 1
   highCellCount: 2
   cellSpawnRadius: 8
   blockagePrefab: {fileID: 278094807567027425, guid: 11bb7c51a658ad6409b4fcdd3d9760ec, type: 3}
-  blockageSpawnFrequency: 50
+  blockageSpawnFrequency: 90
   blockageSpawnRadius: 8
+  sandwichPrefab: {fileID: 3863019695559249751, guid: 31e45745108cb004181121dde9b57cdb, type: 3}
+  coffeePrefab: {fileID: 1070975529175580162, guid: fa3bb1bb30b40d749878238f0c6a490d, type: 3}
+  powerupSpawnFrequency: 1300
+  powerupSpawnRadius: 8
 --- !u!1 &7135114946844079490
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +211,7 @@ Transform:
   - {fileID: 2532150587257392229}
   - {fileID: 616734218365862259}
   - {fileID: 1774448243475864064}
+  - {fileID: 7407515619901679360}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
