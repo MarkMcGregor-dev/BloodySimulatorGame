@@ -7,6 +7,8 @@ TagManager:
   - Environment
   - Collectible
   - Blockage
+  - Sandwich
+  - Coffee
   layers:
   - Default
   - TransparentFX

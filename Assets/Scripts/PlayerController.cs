@@ -37,6 +37,9 @@ public class PlayerController : MonoBehaviour
     private LevelGeneratorV2 levelGenerator;
     private Spline levelSpline;
     private Vector2 localPosition;
+    private GameObject spawner;
+    private IEnumerator coroutine;
+    private GameObject hostControllerInstance;
 
     private void OnEnable()
     {
@@ -63,6 +66,8 @@ public class PlayerController : MonoBehaviour
         levelGenerator = FindObjectOfType<LevelGeneratorV2>();
         levelSpline = FindObjectOfType<Spline>();
         localPosition = Vector2.zero;
+        spawner = GameObject.Find("Spawner");
+        hostControllerInstance = GameObject.Find("HostController");
     }
 
     /*--- UPDATE ---*/
@@ -129,7 +134,9 @@ public class PlayerController : MonoBehaviour
             // destroy the other collectable
             Destroy(other.gameObject);
 
-        } else if (other.tag == "Blockage")
+        } 
+        
+        else if (other.tag == "Blockage")
         {
             destroy.Play();
             // make sure the player has enough cells to break the blockage
@@ -141,18 +148,43 @@ public class PlayerController : MonoBehaviour
                 // decrement the cellCollected by the cost of breaking a blockage
                 numCellsCollected -= cellsToBreakBlockage;
 
-                Debug.Log("Blockage Broken!");
-
             } else
             {
                 // kill the player
                 //if (PlayerDied != null) PlayerDied();
 
-                Debug.Log("Dead");
                 //UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
                 UnityEngine.SceneManagement.SceneManager.LoadScene("EndScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
             }
         }
+
+        else if (other.tag == "Sandwich")
+        {
+            float originalSpawnFrequency = spawner.GetComponent<SpawnerV2>().cellSpawnFrequency;
+            coroutine = SandwichEffect(originalSpawnFrequency);
+            StartCoroutine(coroutine);
+           
+            Destroy(other.gameObject);
+        }
+
+        else if (other.tag == "Coffee")
+        {
+            hostControllerInstance.GetComponent<HostController>().OnCoffeeDrink();
+
+            Destroy(other.gameObject);
+        }
+    }
+
+    private IEnumerator SandwichEffect(float originalSpawnFrequency)
+    {
+
+        spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = 5f;
+
+        yield return new WaitForSeconds(2.5f);
+
+        spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = originalSpawnFrequency;
+
+        StopCoroutine(coroutine);
     }
 
     private void OnHeartRateChanged(float newHeartRate)

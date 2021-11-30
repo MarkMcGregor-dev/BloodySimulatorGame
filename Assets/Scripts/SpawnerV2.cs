@@ -7,6 +7,7 @@ public class SpawnerV2 : MonoBehaviour
 {
     [Tooltip("The distance from the player this spawner should travel at along the spline")]
     public float distanceFromPlayer;
+
     [Header("Blood Cell Config")]
     public GameObject bloodCellPrefab;
     [Tooltip("How far the spawner should travel before triggering another blood cell spawn (lower = more spawning)")]
@@ -27,6 +28,14 @@ public class SpawnerV2 : MonoBehaviour
     [Tooltip("The radius from the center of the spline in which blockages are spawned")]
     public float blockageSpawnRadius;
 
+    [Header("Powerup Config")]
+    public GameObject sandwichPrefab;
+    public GameObject coffeePrefab;
+    [Tooltip("How far the spawner should travel before triggering another blockage spawn (lower = more spawning)")]
+    public float powerupSpawnFrequency;
+    [Tooltip("The radius from the center of the spline in which blockages are spawned")]
+    public float powerupSpawnRadius;
+
     private Spline levelSpline;
     private PlayerController playerController;
     private float lastPlayerDistance;
@@ -34,8 +43,10 @@ public class SpawnerV2 : MonoBehaviour
     private float distanceOfLastCellSpawn;
     private Transform cellSpawnParent;
     private HostController hostController;
-    private float distanceOfLastBlockageSpawn;
+    private float distanceOfLastBlockageSpawnAttempt;
     private Transform blockageSpawnParent;
+    private Transform powerupSpawnParent;
+    private float distanceOfLastPowerupSpawn;
 
     void Start()
     {
@@ -47,8 +58,10 @@ public class SpawnerV2 : MonoBehaviour
         distanceOfLastCellSpawn = 0f;
         cellSpawnParent = transform.parent.Find("BloodCells");
         hostController = FindObjectOfType<HostController>();
-        distanceOfLastBlockageSpawn = 0f;
+        distanceOfLastBlockageSpawnAttempt = 0f;
         blockageSpawnParent = transform.parent.Find("Blockages");
+        powerupSpawnParent = transform.parent.Find("Powerups");
+        distanceOfLastPowerupSpawn = 0f;
     }
 
     void Update()
@@ -66,6 +79,12 @@ public class SpawnerV2 : MonoBehaviour
         if (ShouldSpawnBlockage())
         {
             SpawnBlockage();
+        }
+
+        // check if enough distance has passed since the last spawn to trigger a spawn
+        if ((distanceTravelled - distanceOfLastPowerupSpawn) >= powerupSpawnFrequency)
+        {
+            SpawnPowerup();
         }
     }
 
@@ -131,36 +150,76 @@ public class SpawnerV2 : MonoBehaviour
 
         // rotate the blockage according to the random rotation
         newBlockage.transform.RotateAround(transform.position, transform.forward, rotationDegree);
+    }
+
+    private void SpawnPowerup()
+    {
+        // Get a random direction from the center of the spline to spawn the powerup at:
+        Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+
+        // Get a random distance from the center:
+        float distanceFromCenter = Random.Range(0f, powerupSpawnRadius);
+
+        // Get the location of the cell to spawn
+        Vector3 spawnLocation = transform.position + ((transform.right * direction.x + transform.up * direction.y) * distanceFromCenter);
+
+        int random = Random.Range(1, 3);
+        GameObject powerup;
+
+        switch (random)
+        {
+            case 1:
+                powerup = sandwichPrefab;
+                break;
+            case 2:
+                powerup = coffeePrefab;
+                break;
+            default:
+                powerup = null;
+                break;
+        }
+
+        // spawn a new bloodcell at the location with the correct parent
+        Instantiate<GameObject>(powerup, spawnLocation, Quaternion.identity, powerupSpawnParent);
 
         // update the distance of the last spawn
-        distanceOfLastBlockageSpawn = distanceTravelled;
+        distanceOfLastPowerupSpawn = distanceTravelled;
     }
 
     private bool ShouldSpawnBlockage()
     {
         // check if enough distance has been travelled to spawn another blockage
-        if ((distanceTravelled - distanceOfLastBlockageSpawn) >= blockageSpawnFrequency)
+        if ((distanceTravelled - distanceOfLastBlockageSpawnAttempt) >= blockageSpawnFrequency)
         {
             // get the heartrate values from the host controller
             float minHeartRate = hostController.minHeartRate;
             float idealHeartRate = hostController.idealHeartRate;
             float currentHeartRate = hostController.currentHeartRate;
 
-            int random = Random.Range(1, 11);
+            int random = Random.Range(1, 101);
+            Debug.Log(random);
+
+            distanceOfLastBlockageSpawnAttempt = distanceTravelled;
 
             if (currentHeartRate < minHeartRate + 50f)
             {
-                return (random <= 7);
-
-            } else if (currentHeartRate > idealHeartRate - 40f)
-            {
-                return (random <= 2);
-
-            } else
-            {
-                return (random <= 4);
+                return (random <= 95);
             }
-        } else
+
+            else if (currentHeartRate > idealHeartRate - 40f)
+            {
+                return (random <= 30);
+            }
+
+            else
+            {
+                return (random <= 80);
+            }
+
+            
+        }
+
+        else
         {
             return false;
         }

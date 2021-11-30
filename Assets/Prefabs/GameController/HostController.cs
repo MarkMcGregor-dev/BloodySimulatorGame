@@ -36,8 +36,8 @@ public class HostController : MonoBehaviour
     public float energyDepletionScaler = 1f;
     public float heartRateDeltaScaler = 1f;
     public float energyFromBloodCells = 5f;
-    public float blockageHeartRateIncrement;
-    public float coffeeHeartRateIncrement;
+    public float blockageHeartRateIncrement = 20f;
+    public float coffeeHeartRateIncrement= 40f;
     [Tooltip("The frequency at which the host is simulated (in seconds)")]
     public float updateRate;
 
@@ -138,18 +138,6 @@ public class HostController : MonoBehaviour
 
     public void OnCoffeeDrink()
     {
-        Debug.Log("SIP");
         currentHeartRate = Mathf.Min(currentHeartRate + coffeeHeartRateIncrement, desiredHeartRate);
-
-        GameObject coffee = GameObject.Find("Coffee");
-        coffee.GetComponent<UnityEngine.UI.Button>().interactable = false;
-
-        Invoke("ActivateCoffeeButton", 25.0f);
-    }
-
-    private void ActivateCoffeeButton()
-    {
-        GameObject coffee = GameObject.Find("Coffee");
-        coffee.GetComponent<UnityEngine.UI.Button>().interactable = true;
     }
 }
