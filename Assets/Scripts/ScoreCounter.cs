@@ -25,6 +25,11 @@ public class ScoreCounter : MonoBehaviour
         BlockageBehaviour.BlockageBroken -= OnBlockageBroken;
     }
 
+    private void Start()
+    {
+        totalScore = 0f;
+    }
+
     // listens to collected blood cell "announcement"
     // when the event is heart, this function is called:
     private void OnPlayerCollectedBloodCell()
