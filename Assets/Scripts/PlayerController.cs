@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour
 
         else if (other.tag == "Sandwich")
         {
+            powerUp.Play();
             float originalSpawnFrequency = spawner.GetComponent<SpawnerV2>().cellSpawnFrequency;
             coroutine = SandwichEffect(originalSpawnFrequency);
             StartCoroutine(coroutine);
@@ -169,6 +170,7 @@ public class PlayerController : MonoBehaviour
 
         else if (other.tag == "Coffee")
         {
+            powerUp.Play();
             hostControllerInstance.GetComponent<HostController>().OnCoffeeDrink();
 
             Destroy(other.gameObject);
