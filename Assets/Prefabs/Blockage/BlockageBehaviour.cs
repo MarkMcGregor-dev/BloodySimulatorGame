@@ -48,16 +48,18 @@ public class BlockageBehaviour : MonoBehaviour
         // fire event
         if (BlockageBroken != null) BlockageBroken();
 
-        //emit particle system from blockage position
+        // Spawn a particle system relative to the player:
         var obj = Instantiate(blockageEffect, player.transform, false);
+
+        // Translate it ahead of the player:
         obj.transform.localPosition = new Vector3(0, 0, 5);
+
+        // Unparent, play the particle effect, and then destroy the object
         obj.transform.parent = null;
-
         obj.GetComponent<ParticleSystem>().Play();
-
         Destroy(obj, 3f);
 
-        // destroy the object
+        // Destroy this Blockage: 
         Destroy(gameObject);
 
         GameObject CollectedBloodCells = player.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject;

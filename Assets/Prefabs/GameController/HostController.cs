@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum HostDeathReason
 {
@@ -126,18 +127,42 @@ public class HostController : MonoBehaviour
 
     private void OnCollectBloodCell()
     {
-        // nudge the energy up
         currentEnergy = Mathf.Clamp(currentEnergy + energyFromBloodCells, minEnergy, maxEnergy);
     }
 
     private void OnBlockageBroken()
     {
-        // nudge the heartrate towards desiredHeartRate
         currentHeartRate = Mathf.Min(currentHeartRate + blockageHeartRateIncrement, desiredHeartRate);
+        OnHeartRateIncrease(blockageHeartRateIncrement.ToString());
+
     }
 
     public void OnCoffeeDrink()
     {
         currentHeartRate = Mathf.Min(currentHeartRate + coffeeHeartRateIncrement, desiredHeartRate);
+        OnHeartRateIncrease(coffeeHeartRateIncrement.ToString());
+
+    }
+
+    private void OnHeartRateIncrease(string value)
+    {
+        Animation anim;
+
+        var plusText = GameObject.Find("Plus Text");
+
+        plusText.GetComponent<Text>().text = "+" + value;
+
+        anim = plusText.GetComponent<Animation>();
+        anim.Stop();
+        anim.Play();
+
+        var bpm = GameObject.Find("Heart Panel");
+
+        for (int i = 1; i < 3; i++)
+        {
+            anim = bpm.transform.GetChild(i).GetComponent<Animation>();
+            anim.Stop();
+            anim.Play();
+        }
     }
 }
