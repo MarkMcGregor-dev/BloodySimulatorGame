@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
         } 
         
         else if (other.tag == "Blockage")
-        {
+        {   
             destroy.Play();
             // make sure the player has enough cells to break the blockage
             if (numCellsCollected >= cellsToBreakBlockage)

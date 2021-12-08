@@ -10,6 +10,8 @@ public class BlockageBehaviour : MonoBehaviour
     public Color breakableColor;
     public float breakableColorEmission;
 
+    public ParticleSystem blockageEffect;
+
     private GameObject player;
     private Material blockageMat;
     private Color c;
@@ -57,6 +59,9 @@ public class BlockageBehaviour : MonoBehaviour
     {
         // fire event
         if (BlockageBroken != null) BlockageBroken();
+
+        //emit particle system from blockage position
+        blockageEffect.Play();
 
         // destroy the object
         Destroy(gameObject);
