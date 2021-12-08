@@ -10,15 +10,11 @@ public class BlockageBehaviour : MonoBehaviour
     public Color breakableColor;
     public float breakableColorEmission;
 
-    public ParticleSystem blockageEffect;
+    public GameObject blockageEffect;
 
     private GameObject player;
     private Material blockageMat;
     private Color c;
-    private float a = 0.0f;
-    private bool goingUp;
-
-    private Color transparent = new Color(27/255f, 229/255f, 108/255f, 0.5f);
 
     private int cellsToBreakBlockage;
 
@@ -29,7 +25,6 @@ public class BlockageBehaviour : MonoBehaviour
         blockageMat = transform.GetComponent<MeshRenderer>().material;
 
         c = blockageMat.GetColor("Color_8a2c3fc848354067aa332bfb7bd854fc");
-        goingUp = true;
 
         cellsToBreakBlockage = player.GetComponent<PlayerController>().cellsToBreakBlockage;
     }
@@ -38,13 +33,6 @@ public class BlockageBehaviour : MonoBehaviour
     {
         if (player.GetComponent<PlayerController>().numCellsCollected >= cellsToBreakBlockage)
         {
-            c.a = goingUp ? .005f + c.a : c.a - .005f;
-
-            if (c.a >= 0.5f)
-                goingUp = false;
-            else if (c.a <= 0.0f)
-                goingUp = true;
-
            blockageMat.SetColor("Color_8a2c3fc848354067aa332bfb7bd854fc", breakableColor * breakableColorEmission);
         }
 
@@ -61,7 +49,13 @@ public class BlockageBehaviour : MonoBehaviour
         if (BlockageBroken != null) BlockageBroken();
 
         //emit particle system from blockage position
-        blockageEffect.Play();
+        var obj = Instantiate(blockageEffect, player.transform, false);
+        obj.transform.localPosition = new Vector3(0, 0, 5);
+        obj.transform.parent = null;
+
+        obj.GetComponent<ParticleSystem>().Play();
+
+        Destroy(obj, 3f);
 
         // destroy the object
         Destroy(gameObject);
