@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource collect;
     public AudioSource destroy;
     public AudioSource powerUp;
+    public AudioSource coffeeDrink;
 
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     //PlayerState currentState = PlayerState.Idle;
@@ -170,7 +171,9 @@ public class PlayerController : MonoBehaviour
 
         else if (other.tag == "Coffee")
         {
-            powerUp.Play();
+            // powerUp.Play();
+            coffeeDrink.Play();
+
             hostControllerInstance.GetComponent<HostController>().OnCoffeeDrink();
 
             Destroy(other.gameObject);
