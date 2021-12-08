@@ -158,7 +158,7 @@ public class HostController : MonoBehaviour
 
         var bpm = GameObject.Find("Heart Panel");
 
-        for (int i = 1; i < 3; i++)
+        for (int i = 1; i < 4; i++)
         {
             anim = bpm.transform.GetChild(i).GetComponent<Animation>();
             anim.Stop();
