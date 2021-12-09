@@ -1141,6 +1141,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 580803778374176541, guid: 200977f3cd2e5664a826703fcafcd7fc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1318427963374084312, guid: 200977f3cd2e5664a826703fcafcd7fc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1196,6 +1200,14 @@ PrefabInstance:
     - target: {fileID: 1318427964037740001, guid: 200977f3cd2e5664a826703fcafcd7fc, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052175194400028985, guid: 200977f3cd2e5664a826703fcafcd7fc, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052175194400028985, guid: 200977f3cd2e5664a826703fcafcd7fc, type: 3}
+      propertyPath: m_PlayAutomatically
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 200977f3cd2e5664a826703fcafcd7fc, type: 3}

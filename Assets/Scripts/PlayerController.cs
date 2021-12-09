@@ -185,9 +185,21 @@ public class PlayerController : MonoBehaviour
 
         spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = 5f;
 
+        var obj = GameObject.Find("Energy Up Indicator");
+        var anim = obj.GetComponent<Animation>();
+        var animName = "energyUpArrows";
+
+        anim.Play(animName);
+
         yield return new WaitForSeconds(2.5f);
 
         spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = originalSpawnFrequency;
+
+        yield return new WaitForSeconds(3f);
+
+        anim[animName].time = 0.0f;
+        anim.Sample();
+        anim[animName].enabled = false;
 
         StopCoroutine(coroutine);
     }
