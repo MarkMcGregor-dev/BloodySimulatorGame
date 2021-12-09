@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public AudioSource destroy;
     public AudioSource powerUp;
     public AudioSource coffeeDrink;
+    public AudioSource sandwichEat;
 
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     //PlayerState currentState = PlayerState.Idle;
@@ -78,7 +79,7 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxis(translateInputAxis);
 
         // calculate the new distance in the level
-        distanceInLevel += traverseSpeed * traverseSpeedScaler * Time.deltaTime;
+        distanceInLevel += traverseSpeed * ( 1 + traverseSpeedScaler) * Time.deltaTime;
 
         // get the sample on the curve where the player should be
         CurveSample curveSample = levelSpline.GetSampleAtDistance(distanceInLevel);
@@ -106,7 +107,7 @@ public class PlayerController : MonoBehaviour
         controlledMovement = Vector2.ClampMagnitude(localPosition + controlledMovement, movementRadius) - localPosition;
 
         // apply the movement
-        localPosition += controlledMovement * hostController.currentHeartRate * moveSpeed * Time.deltaTime;
+        localPosition += controlledMovement * moveSpeed * Time.deltaTime;
 
         Vector3 localTranslation =
             (transform.right * localPosition.x) +
@@ -161,7 +162,8 @@ public class PlayerController : MonoBehaviour
 
         else if (other.tag == "Sandwich")
         {
-            powerUp.Play();
+            sandwichEat.Play();
+
             float originalSpawnFrequency = spawner.GetComponent<SpawnerV2>().cellSpawnFrequency;
             coroutine = SandwichEffect(originalSpawnFrequency);
             StartCoroutine(coroutine);
@@ -171,7 +173,6 @@ public class PlayerController : MonoBehaviour
 
         else if (other.tag == "Coffee")
         {
-            // powerUp.Play();
             coffeeDrink.Play();
 
             hostControllerInstance.GetComponent<HostController>().OnCoffeeDrink();
@@ -189,6 +190,7 @@ public class PlayerController : MonoBehaviour
         var anim = obj.GetComponent<Animation>();
         var animName = "energyUpArrows";
 
+        obj.transform.GetChild(0).GetComponent<Animation>().Play();
         anim.Play(animName);
 
         yield return new WaitForSeconds(2.5f);
@@ -206,7 +208,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnHeartRateChanged(float newHeartRate)
     {
-        traverseSpeedScaler = newHeartRate / 10f;
+        traverseSpeedScaler = newHeartRate / 500f;
     }
 
     private void OnLevelSectionRemoved(float curveLength)
@@ -216,6 +218,6 @@ public class PlayerController : MonoBehaviour
         // offset the distance travelled by the gap between points
         distanceInLevel -= curveLength;
 
-        Debug.Log("Previous distance: " + previousDistance + "\n\tNew Distance: " + distanceInLevel);
+        // Debug.Log("Previous distance: " + previousDistance + "\n\tNew Distance: " + distanceInLevel);
     }
 }
