@@ -12,11 +12,9 @@ public class SpawnerV2 : MonoBehaviour
     public GameObject bloodCellPrefab;
     [Tooltip("How far the spawner should travel before triggering another blood cell spawn (lower = more spawning)")]
     public float cellSpawnFrequency;
-    [Tooltip("The low number of cells to spawn at once (when energy < 20)")]
-    public int lowCellCount;
     [Tooltip("The normal number of cells to spawn at once")]
     public int normalCellCount;
-    [Tooltip("The high number of cells to spawn at once (when energy > 90)")]
+    [Tooltip("The high number of cells to spawn at once (when heart rate > 175)")]
     public int highCellCount;
     [Tooltip("The allowed radius from the center of the spline in which cells can be spawned")]
     public float cellSpawnRadius;
@@ -110,8 +108,7 @@ public class SpawnerV2 : MonoBehaviour
         float currentHeartRate = hostController.currentHeartRate;
 
         // determine how many cells should be spawned
-        //int numOfCells = Random.Range(0, maxSpawnAmount);
-        int numOfCells = currentHeartRate < 175 ? highCellCount : normalCellCount;
+        int numOfCells = currentHeartRate < 175 ? normalCellCount : highCellCount;
 
         // spawn the desired number of cells
         for (int i = 0; i < numOfCells; i++)

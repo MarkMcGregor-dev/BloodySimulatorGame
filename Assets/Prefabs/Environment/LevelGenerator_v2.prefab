@@ -136,9 +136,9 @@ MonoBehaviour:
   distanceFromPlayer: 200
   bloodCellPrefab: {fileID: 785707000776582252, guid: 6a5a4b39d550dc144a6b6b6f62e86be4, type: 3}
   cellSpawnFrequency: 40
-  lowCellCount: 0
-  normalCellCount: 1
-  highCellCount: 2
+  lowCellCount: 1
+  normalCellCount: 2
+  highCellCount: 3
   cellSpawnRadius: 8
   blockagePrefab: {fileID: 278094807567027425, guid: 11bb7c51a658ad6409b4fcdd3d9760ec, type: 3}
   blockageSpawnFrequency: 90
