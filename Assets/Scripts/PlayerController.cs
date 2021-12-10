@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     public AudioSource coffeeDrink;
     public AudioSource sandwichEat;
 
+    public GameObject deathEffect;
+
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     //PlayerState currentState = PlayerState.Idle;
 
@@ -39,9 +41,11 @@ public class PlayerController : MonoBehaviour
     private LevelGeneratorV2 levelGenerator;
     private Spline levelSpline;
     private Vector2 localPosition;
+
     private GameObject spawner;
-    private IEnumerator coroutine;
     private GameObject hostControllerInstance;
+
+    private IEnumerator coroutineSandwich;
 
     private void OnEnable()
     {
@@ -152,11 +156,7 @@ public class PlayerController : MonoBehaviour
 
             } else
             {
-                // kill the player
-                //if (PlayerDied != null) PlayerDied();
-
-                //UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-                UnityEngine.SceneManagement.SceneManager.LoadScene("EndScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
+                hostControllerInstance.GetComponent<HostController>().ExecuteOnPlayerDeath();
             }
         }
 
@@ -165,8 +165,8 @@ public class PlayerController : MonoBehaviour
             sandwichEat.Play();
 
             float originalSpawnFrequency = spawner.GetComponent<SpawnerV2>().cellSpawnFrequency;
-            coroutine = SandwichEffect(originalSpawnFrequency);
-            StartCoroutine(coroutine);
+            coroutineSandwich = SandwichEffect(originalSpawnFrequency);
+            StartCoroutine(coroutineSandwich);
            
             Destroy(other.gameObject);
         }
@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
         anim.Sample();
         anim[animName].enabled = false;
 
-        StopCoroutine(coroutine);
+        StopCoroutine(coroutineSandwich);
     }
 
     private void OnHeartRateChanged(float newHeartRate)

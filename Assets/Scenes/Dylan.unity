@@ -486,6 +486,10 @@ PrefabInstance:
       propertyPath: scale.x
       value: 1513.7
       objectReference: {fileID: 0}
+    - target: {fileID: 7135114946844079490, guid: e19c26ef940e08e499941ab5e6561f97, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7610090765548607001, guid: e19c26ef940e08e499941ab5e6561f97, type: 3}
       propertyPath: m_Name
       value: LevelGenerator_v2
@@ -589,6 +593,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  enableSaturation: 1
+  minSaturation: -50
 --- !u!114 &905595224
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum HostDeathReason
 {
@@ -47,8 +48,13 @@ public class HostController : MonoBehaviour
     public float currentHeartRate;
     public float desiredHeartRate;
     public float currentEnergy;
+
     private HostState hostState;
     private float timeOfLastStep;
+
+    private IEnumerator coroutineDeath;
+
+    private GameObject player;
 
     private void OnEnable()
     {
@@ -72,8 +78,11 @@ public class HostController : MonoBehaviour
         currentHeartRate = idealHeartRate; // heartrate starts at the ideal value
         desiredHeartRate = idealHeartRate;
         currentEnergy = (maxEnergy - minEnergy) * 1f;
+
         hostState = HostState.Alive;
         timeOfLastStep = Time.time;
+
+        player = GameObject.Find("Player");
     }
 
     void Update()
@@ -87,9 +96,11 @@ public class HostController : MonoBehaviour
                 // host dies
                 if (HostDied != null) HostDied(HostDeathReason.HeartRateLow);
                 hostState = HostState.Dead;
-                UnityEngine.SceneManagement.SceneManager.LoadScene("EndScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
+
+                ExecuteOnPlayerDeath();
 
             }
+
             else
             {
                 float timeSinceLastStep = Time.time - timeOfLastStep;
@@ -164,5 +175,37 @@ public class HostController : MonoBehaviour
             anim.Stop();
             anim.Play();
         }
+    }
+
+    public void ExecuteOnPlayerDeath()
+    {
+        coroutineDeath = OnPlayerDeath();
+        StartCoroutine(coroutineDeath);
+    }
+
+    public IEnumerator OnPlayerDeath()
+    {
+        Destroy(player.GetComponent<Rigidbody>());
+        player.transform.GetChild(0).gameObject.SetActive(false);
+
+        var cleanupObj = GameObject.Find("CleanupCollider");
+        Destroy(cleanupObj);
+
+        var cameraHolder = GameObject.Find("CameraHolder");
+        cameraHolder.GetComponent<FollowPlayer>().enabled = false;
+        cameraHolder.transform.GetChild(0).gameObject.GetComponent<ChangeFOV>().enabled = false;
+
+        // Spawn a particle system relative to the player:
+        var obj = Instantiate(player.GetComponent<PlayerController>().deathEffect, player.transform, false);
+        obj.transform.localPosition = new Vector3(0, 0, -1);
+        obj.GetComponent<ParticleSystem>().Play();
+
+        obj.transform.parent = null;
+
+        yield return new WaitForSeconds(0.75f);
+
+        SceneManager.LoadScene("EndScreen", UnityEngine.SceneManagement.LoadSceneMode.Single);
+
+        StopCoroutine(coroutineDeath);
     }
 }
