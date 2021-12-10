@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public AudioSource collect;
     public AudioSource destroy;
     public AudioSource powerUp;
+    public AudioSource coffeeDrink;
+    public AudioSource sandwichEat;
 
     enum PlayerState {Idle, Moving, Collision, Dead, Respawn}
     //PlayerState currentState = PlayerState.Idle;
@@ -77,7 +79,7 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxis(translateInputAxis);
 
         // calculate the new distance in the level
-        distanceInLevel += traverseSpeed * traverseSpeedScaler * Time.deltaTime;
+        distanceInLevel += traverseSpeed * ( 1 + traverseSpeedScaler) * Time.deltaTime;
 
         // get the sample on the curve where the player should be
         CurveSample curveSample = levelSpline.GetSampleAtDistance(distanceInLevel);
@@ -105,7 +107,7 @@ public class PlayerController : MonoBehaviour
         controlledMovement = Vector2.ClampMagnitude(localPosition + controlledMovement, movementRadius) - localPosition;
 
         // apply the movement
-        localPosition += controlledMovement * hostController.currentHeartRate * moveSpeed * Time.deltaTime;
+        localPosition += controlledMovement * moveSpeed * Time.deltaTime;
 
         Vector3 localTranslation =
             (transform.right * localPosition.x) +
@@ -137,7 +139,7 @@ public class PlayerController : MonoBehaviour
         } 
         
         else if (other.tag == "Blockage")
-        {
+        {   
             destroy.Play();
             // make sure the player has enough cells to break the blockage
             if (numCellsCollected >= cellsToBreakBlockage)
@@ -160,6 +162,8 @@ public class PlayerController : MonoBehaviour
 
         else if (other.tag == "Sandwich")
         {
+            sandwichEat.Play();
+
             float originalSpawnFrequency = spawner.GetComponent<SpawnerV2>().cellSpawnFrequency;
             coroutine = SandwichEffect(originalSpawnFrequency);
             StartCoroutine(coroutine);
@@ -169,6 +173,8 @@ public class PlayerController : MonoBehaviour
 
         else if (other.tag == "Coffee")
         {
+            coffeeDrink.Play();
+
             hostControllerInstance.GetComponent<HostController>().OnCoffeeDrink();
 
             Destroy(other.gameObject);
@@ -180,16 +186,29 @@ public class PlayerController : MonoBehaviour
 
         spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = 5f;
 
+        var obj = GameObject.Find("Energy Up Indicator");
+        var anim = obj.GetComponent<Animation>();
+        var animName = "energyUpArrows";
+
+        obj.transform.GetChild(0).GetComponent<Animation>().Play();
+        anim.Play(animName);
+
         yield return new WaitForSeconds(2.5f);
 
         spawner.GetComponent<SpawnerV2>().cellSpawnFrequency = originalSpawnFrequency;
+
+        yield return new WaitForSeconds(3f);
+
+        anim[animName].time = 0.0f;
+        anim.Sample();
+        anim[animName].enabled = false;
 
         StopCoroutine(coroutine);
     }
 
     private void OnHeartRateChanged(float newHeartRate)
     {
-        traverseSpeedScaler = newHeartRate / 10f;
+        traverseSpeedScaler = newHeartRate / 500f;
     }
 
     private void OnLevelSectionRemoved(float curveLength)
@@ -199,6 +218,6 @@ public class PlayerController : MonoBehaviour
         // offset the distance travelled by the gap between points
         distanceInLevel -= curveLength;
 
-        Debug.Log("Previous distance: " + previousDistance + "\n\tNew Distance: " + distanceInLevel);
+        // Debug.Log("Previous distance: " + previousDistance + "\n\tNew Distance: " + distanceInLevel);
     }
 }

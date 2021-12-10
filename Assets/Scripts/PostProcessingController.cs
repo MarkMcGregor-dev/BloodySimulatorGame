@@ -8,6 +8,9 @@ public class PostProcessingController : MonoBehaviour
 {
     public float effectBeginValue;
     public AnimationCurve effectCurve;
+    public bool enableSaturation;
+    [Range(-100f, 0f)]
+    public float minSaturation;
 
     private HostController hostController;
     private Volume ppVolume;
@@ -41,8 +44,11 @@ public class PostProcessingController : MonoBehaviour
 
         float colorValue = effectCurve.Evaluate(deathValue);
 
-        float newColorValue = Mathf.Lerp(-100f, 0f, colorValue);
-        colorAdjustments.saturation.value = newColorValue;
+        if (enableSaturation)
+        {
+            float newColorValue = Mathf.Lerp(minSaturation, 0f, colorValue);
+            colorAdjustments.saturation.value = newColorValue;
+        }
 
         vignette.intensity.value = Mathf.Lerp(0.75f, 0.25f, colorValue);
     }

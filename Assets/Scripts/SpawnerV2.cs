@@ -111,7 +111,7 @@ public class SpawnerV2 : MonoBehaviour
 
         // determine how many cells should be spawned
         //int numOfCells = Random.Range(0, maxSpawnAmount);
-        int numOfCells = currentEnergy < 90 ? currentEnergy < 20 ? lowCellCount: normalCellCount :highCellCount;
+        int numOfCells = currentEnergy < 180 ? highCellCount : normalCellCount;
 
         // spawn the desired number of cells
         for (int i = 0; i < numOfCells; i++)
@@ -163,7 +163,7 @@ public class SpawnerV2 : MonoBehaviour
         // Get the location of the cell to spawn
         Vector3 spawnLocation = transform.position + ((transform.right * direction.x + transform.up * direction.y) * distanceFromCenter);
 
-        int random = Random.Range(1, 3);
+        int random = Random.Range(1, 5);
         GameObject powerup;
 
         switch (random)
@@ -171,16 +171,20 @@ public class SpawnerV2 : MonoBehaviour
             case 1:
                 powerup = sandwichPrefab;
                 break;
+
             case 2:
                 powerup = coffeePrefab;
                 break;
+
             default:
                 powerup = null;
                 break;
         }
 
-        // spawn a new bloodcell at the location with the correct parent
-        Instantiate<GameObject>(powerup, spawnLocation, Quaternion.identity, powerupSpawnParent);
+        if (powerup != null)
+        {
+            Instantiate<GameObject>(powerup, spawnLocation, Quaternion.identity, powerupSpawnParent);
+        }
 
         // update the distance of the last spawn
         distanceOfLastPowerupSpawn = distanceTravelled;

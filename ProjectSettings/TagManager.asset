@@ -9,6 +9,7 @@ TagManager:
   - Blockage
   - Sandwich
   - Coffee
+  - BlockageContainer
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Water
   - UI
   - Player+Camera
-  - 
+  - Blockages
   - 
   - 
   - 

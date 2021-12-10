@@ -126,3 +126,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   breakableColor: {r: 0.105882354, g: 0.8980392, b: 0.42352942, a: 0.49019608}
   breakableColorEmission: 1.25
+  blockageEffect: {fileID: 1184810919592043296, guid: 296243b5b635c124a972047dacb69f81, type: 3}

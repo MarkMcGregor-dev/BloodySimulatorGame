@@ -8,12 +8,16 @@ public class HowToPlayMenu : MonoBehaviour
     public GameObject controls;
     public GameObject blockageTutorial;
     public GameObject heartrateTutorial;
+    public GameObject coffeeObject;
+    public GameObject sandwichObject;
     public GameObject nextButton;
    
     void Start()
     {
         rules.SetActive(true);
         controls.SetActive(true);
+        coffeeObject.SetActive(true);
+        sandwichObject.SetActive(true);
 
         blockageTutorial.SetActive(false);
         heartrateTutorial.SetActive(false);
@@ -23,6 +27,8 @@ public class HowToPlayMenu : MonoBehaviour
     {
         rules.SetActive(false);
         controls.SetActive(false);
+        coffeeObject.SetActive(false);
+        sandwichObject.SetActive(false);
 
         blockageTutorial.SetActive(true);
         heartrateTutorial.SetActive(true);
