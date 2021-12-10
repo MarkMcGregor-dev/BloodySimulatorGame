@@ -111,12 +111,12 @@ public class SpawnerV2 : MonoBehaviour
 
         // determine how many cells should be spawned
         //int numOfCells = Random.Range(0, maxSpawnAmount);
-        int numOfCells = currentHeartRate < 175 ? currentHeartRate < 50 ? lowCellCount : normalCellCount : highCellCount;
+        int numOfCells = currentHeartRate < 175 ? highCellCount : normalCellCount;
 
         // spawn the desired number of cells
         for (int i = 0; i < numOfCells; i++)
         {
-            if (numOfCells == lowCellCount)
+            if (currentHeartRate < 75)
             {
                 var random = Random.Range(1, 5);
 

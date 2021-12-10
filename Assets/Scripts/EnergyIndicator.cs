@@ -25,7 +25,7 @@ public class EnergyIndicator : MonoBehaviour
             fillValue = 1f;
         }
 
-        else if(heartRate < 50)
+        else if(heartRate < 75)
         {
             fillValue = 0.333f;
         }
