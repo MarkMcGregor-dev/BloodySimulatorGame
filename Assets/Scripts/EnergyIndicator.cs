@@ -17,8 +17,23 @@ public class EnergyIndicator : MonoBehaviour
 
     void Update()
     {
-        // calculate the fill value from the host controller's energy
-        float fillValue = Mathf.InverseLerp(hostController.minEnergy, hostController.maxEnergy, hostController.currentEnergy);
+        var heartRate = hostController.currentHeartRate;
+        float fillValue;
+
+        if(heartRate > 175)
+        {
+            fillValue = 1f;
+        }
+
+        else if(heartRate < 50)
+        {
+            fillValue = 0.333f;
+        }
+
+        else
+        {
+            fillValue = 0.666f;
+        }
 
         // update the slider
         slider.value = fillValue;

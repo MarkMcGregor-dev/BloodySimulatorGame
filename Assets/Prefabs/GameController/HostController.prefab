@@ -52,6 +52,7 @@ MonoBehaviour:
   energyFromBloodCells: 0.55
   blockageHeartRateIncrement: 13
   coffeeHeartRateIncrement: 30
+  deathEffect: {fileID: 7178483321639830165, guid: 42ce1c6ebec475e4988b962eb37a9a11, type: 3}
   updateRate: 0.5
   currentHeartRate: 0
   desiredHeartRate: 0

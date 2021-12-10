@@ -337,6 +337,7 @@ MonoBehaviour:
   powerUp: {fileID: 6599926285767049756}
   coffeeDrink: {fileID: 9031460399677576640}
   sandwichEat: {fileID: 5768758160898684857}
+  deathEffect: {fileID: 7178483321639830165, guid: 42ce1c6ebec475e4988b962eb37a9a11, type: 3}
   translateInputAxis: Vertical
   rotateInputAxis: Horizontal
   traverseSpeed: 50

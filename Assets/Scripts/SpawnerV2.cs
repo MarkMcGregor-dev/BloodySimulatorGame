@@ -107,16 +107,30 @@ public class SpawnerV2 : MonoBehaviour
     private void SpawnCellCluster()
     {
         // get the current energy from the host controller
-        float currentEnergy = hostController.currentEnergy;
+        float currentHeartRate = hostController.currentHeartRate;
 
         // determine how many cells should be spawned
         //int numOfCells = Random.Range(0, maxSpawnAmount);
-        int numOfCells = currentEnergy < 180 ? highCellCount : normalCellCount;
+        int numOfCells = currentHeartRate < 175 ? currentHeartRate < 50 ? lowCellCount : normalCellCount : highCellCount;
 
         // spawn the desired number of cells
         for (int i = 0; i < numOfCells; i++)
         {
-            SpawnCell();
+            if (numOfCells == lowCellCount)
+            {
+                var random = Random.Range(1, 5);
+
+                if(random > 1)
+                {
+                    SpawnCell();
+                }
+            }
+
+            else
+            {
+                SpawnCell();
+            }
+                
         }
 
         // update the distance of the last spawn
@@ -163,23 +177,39 @@ public class SpawnerV2 : MonoBehaviour
         // Get the location of the cell to spawn
         Vector3 spawnLocation = transform.position + ((transform.right * direction.x + transform.up * direction.y) * distanceFromCenter);
 
-        int random = Random.Range(1, 5);
+        // calculate the high-end probability of a powerup spawning accounting for the current energy level
+        // (this will cause powerups to spawn more when the heartrate is low)
+        float powerupSpawnMaxProb = Mathf.Lerp(
+            1.5f, 8f, Mathf.InverseLerp(hostController.minHeartRate, hostController.idealHeartRate, hostController.currentHeartRate));
+
+        float random = Random.Range(0f, powerupSpawnMaxProb);
         GameObject powerup;
 
-        switch (random)
+
+        if (random <= 1f) {
+            powerup = sandwichPrefab;
+        } else if (random <= 2f)
         {
-            case 1:
-                powerup = sandwichPrefab;
-                break;
-
-            case 2:
-                powerup = coffeePrefab;
-                break;
-
-            default:
-                powerup = null;
-                break;
+            powerup = coffeePrefab;
+        } else
+        {
+            powerup = null;
         }
+
+        //switch (random)
+        //{
+        //    case 1:
+        //        powerup = sandwichPrefab;
+        //        break;
+
+        //    case 2:
+        //        powerup = coffeePrefab;
+        //        break;
+
+        //    default:
+        //        powerup = null;
+        //        break;
+        //}
 
         if (powerup != null)
         {

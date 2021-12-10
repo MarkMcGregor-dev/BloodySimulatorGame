@@ -58,17 +58,6 @@ public class LevelGeneratorV2 : MonoBehaviour
             // generate a new section
             AddSectionToSpline();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // add a section to the spline
-            AddSectionToSpline();
-
-        } else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            // remove a spline point from the spline
-            RemoveSectionFromSpline();
-        }
     }
 
     private Vector3 GetNewPoint()
