@@ -107,16 +107,30 @@ public class SpawnerV2 : MonoBehaviour
     private void SpawnCellCluster()
     {
         // get the current energy from the host controller
-        float currentEnergy = hostController.currentEnergy;
+        float currentHeartRate = hostController.currentHeartRate;
 
         // determine how many cells should be spawned
         //int numOfCells = Random.Range(0, maxSpawnAmount);
-        int numOfCells = currentEnergy < 180 ? highCellCount : normalCellCount;
+        int numOfCells = currentHeartRate < 175 ? currentHeartRate < 50 ? lowCellCount : normalCellCount : highCellCount;
 
         // spawn the desired number of cells
         for (int i = 0; i < numOfCells; i++)
         {
-            SpawnCell();
+            if (numOfCells == lowCellCount)
+            {
+                var random = Random.Range(1, 5);
+
+                if(random > 1)
+                {
+                    SpawnCell();
+                }
+            }
+
+            else
+            {
+                SpawnCell();
+            }
+                
         }
 
         // update the distance of the last spawn
